@@ -102,12 +102,6 @@
 
     <!-- 创业历程时间轴 -->
     <HistoryTimeline />
-
-    <!-- 企业文化 -->
-    <CultureSection />
-
-    <!-- 品牌荣誉墙 -->
-    <HonorsWall />
   </div>
 </template>
 
