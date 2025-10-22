@@ -29,12 +29,12 @@
 
         <!-- 桌面端导航菜单 -->
         <div class="hidden lg:flex items-center gap-8">
-          <a
+          <router-link
             v-for="item in navItems"
             :key="item.name"
-            :href="item.path"
+            :to="item.path"
             :class="[
-              'relative text-base font-medium transition-all duration-300 group',
+              'relative text-base font-medium transition-all duration-300 group cursor-pointer',
               scrolled ? 'text-gray-700 hover:text-[#8BC34A]' : 'text-white hover:text-[#FF9800]'
             ]"
           >
@@ -46,7 +46,7 @@
                 scrolled ? 'bg-gradient-to-r from-[#8BC34A] to-[#FF9800]' : 'bg-[#FF9800]'
               ]"
             ></span>
-          </a>
+          </router-link>
         </div>
 
         <!-- 右侧联系按钮 -->
@@ -68,15 +68,15 @@
           </a>
 
           <!-- 加盟咨询按钮 - 东池品牌橙绿渐变 -->
-          <a
-            href="#franchise"
+          <router-link
+            to="/franchise"
             class="px-8 py-3 bg-gradient-to-r from-[#8BC34A] to-[#FF9800] text-white rounded-full font-bold shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
           >
             <span>加盟咨询</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
             </svg>
-          </a>
+          </router-link>
         </div>
 
         <!-- 移动端汉堡菜单按钮 -->
@@ -110,15 +110,15 @@
       >
         <div class="container mx-auto px-6 py-6 space-y-4">
           <!-- 移动端导航链接 -->
-          <a
+          <router-link
             v-for="item in navItems"
             :key="item.name"
-            :href="item.path"
+            :to="item.path"
             class="block py-3 px-4 rounded-lg text-gray-700 font-medium hover:bg-gradient-to-r hover:from-[#8BC34A]/10 hover:to-[#FF9800]/10 hover:text-[#8BC34A] transition-all duration-200 border-l-4 border-transparent hover:border-[#8BC34A]"
             @click="mobileMenuOpen = false"
           >
             {{ item.name }}
-          </a>
+          </router-link>
 
           <div class="pt-4 border-t border-gray-100 space-y-3">
             <!-- 移动端加盟热线 -->
@@ -133,8 +133,8 @@
             </a>
 
             <!-- 移动端加盟咨询 -->
-            <a
-              href="#franchise"
+            <router-link
+              to="/franchise"
               class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-lg bg-gradient-to-r from-[#8BC34A] to-[#FF9800] text-white font-bold shadow-lg"
               @click="mobileMenuOpen = false"
             >
@@ -142,7 +142,7 @@
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
               </svg>
-            </a>
+            </router-link>
           </div>
 
           <!-- 移动端品牌slogan -->
@@ -158,20 +158,23 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const scrolled = ref(false)
 const mobileMenuOpen = ref(false)
 
 // 导航菜单项
 const navItems = [
-  { name: '首页', path: '#home' },
-  { name: '关于我们', path: '#about' },
-  { name: '产品中心', path: '#products' },
-  { name: '品质保障', path: '#quality' },
-  { name: '加盟合作', path: '#franchise' },
-  { name: '门店查询', path: '#stores' },
-  { name: '新闻资讯', path: '#news' },
-  { name: '联系我们', path: '#contact' }
+  { name: '首页', path: '/' },
+  { name: '关于我们', path: '/about' },
+  { name: '产品中心', path: '/products' },
+  { name: '品质保障', path: '/quality' },
+  { name: '加盟合作', path: '/franchise' },
+  { name: '门店查询', path: '/stores' },
+  { name: '新闻资讯', path: '/news' },
+  { name: '联系我们', path: '/contact' }
 ]
 
 // 滚动监听
