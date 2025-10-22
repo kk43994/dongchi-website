@@ -114,8 +114,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import HistoryTimeline from '../components/about/HistoryTimeline.vue'
-import CultureSection from '../components/about/CultureSection.vue'
-import HonorsWall from '../components/about/HonorsWall.vue'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
