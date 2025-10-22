@@ -1,19 +1,28 @@
 <template>
   <section class="relative w-full h-screen overflow-hidden">
-    <!-- 视频背景 -->
+    <!-- Canvas粒子爆炸效果 - GPU加速优化 -->
+    <canvas ref="particleCanvas" class="absolute inset-0 z-0" style="will-change: contents;"></canvas>
+
+    <!-- 视频背景 - 优化：添加preload和poster -->
     <div class="absolute inset-0">
       <video
         autoplay
         loop
         muted
         playsinline
+        preload="auto"
         class="w-full h-full object-cover"
+        style="will-change: transform;"
       >
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
       <!-- 视频遮罩层 -->
       <div class="absolute inset-0 bg-gradient-to-br from-black/50 via-black/40 to-black/50"></div>
     </div>
+
+    <!-- 光晕装饰 -->
+    <div class="absolute top-20 left-20 w-96 h-96 bg-green-500/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-20 right-20 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s"></div>
 
     <!-- 内容区 -->
     <div class="relative z-10 h-full flex flex-col items-center justify-center text-white px-6">
@@ -74,20 +83,127 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 
 const logoRef = ref(null)
 const sloganRef = ref(null)
 const subtitleRef = ref(null)
 const ctaRef = ref(null)
+const particleCanvas = ref(null)
 
 const slogan = '良心良食 健康东池'
 const displayedSlogan = ref('')
 
+let particles = []
+let animationId = null
+
+// 粒子类
+class Particle {
+  constructor(x, y, canvas) {
+    this.x = x
+    this.y = y
+    this.size = Math.random() * 4 + 2
+    this.speedX = (Math.random() - 0.5) * 8
+    this.speedY = (Math.random() - 0.5) * 8
+    this.gravity = 0.05
+    this.friction = 0.98
+    this.opacity = 1
+    this.color = Math.random() > 0.5 ? '#8BC34A' : '#FF9800'
+    this.canvas = canvas
+  }
+
+  update() {
+    this.speedY += this.gravity
+    this.speedX *= this.friction
+    this.speedY *= this.friction
+    this.x += this.speedX
+    this.y += this.speedY
+    this.opacity -= 0.01
+  }
+
+  draw(ctx) {
+    ctx.save()
+    ctx.globalAlpha = this.opacity
+    ctx.fillStyle = this.color
+    ctx.shadowBlur = 15
+    ctx.shadowColor = this.color
+    ctx.beginPath()
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.restore()
+  }
+
+  isDead() {
+    return this.opacity <= 0
+  }
+}
+
+// 创建爆炸效果 - 优化：减少粒子数量提升性能
+const createExplosion = (x, y, canvas) => {
+  const particleCount = 50  // 从100降低到50，视觉效果几乎无差异
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle(x, y, canvas))
+  }
+}
+
+// 动画循环 - 优化：只在有粒子时渲染
+const animate = (ctx, canvas) => {
+  // 如果没有粒子，暂停渲染节省CPU
+  if (particles.length === 0) {
+    animationId = null
+    return
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+  particles = particles.filter(particle => {
+    particle.update()
+    particle.draw(ctx)
+    return !particle.isDead()
+  })
+
+  animationId = requestAnimationFrame(() => animate(ctx, canvas))
+}
+
+// 初始化Canvas粒子系统
+const initParticles = () => {
+  const canvas = particleCanvas.value
+  if (!canvas) return
+
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+  const ctx = canvas.getContext('2d')
+
+  // 页面加载时创建中心爆炸
+  setTimeout(() => {
+    createExplosion(canvas.width / 2, canvas.height / 2, canvas)
+    if (!animationId) {
+      animate(ctx, canvas)
+    }
+  }, 500)
+
+  // 每5秒创建随机位置的爆炸 - 优化：降低频率减少CPU负担
+  setInterval(() => {
+    const x = Math.random() * canvas.width
+    const y = Math.random() * canvas.height
+    createExplosion(x, y, canvas)
+    // 如果动画已停止，重新启动
+    if (!animationId) {
+      animate(ctx, canvas)
+    }
+  }, 5000)  // 从3秒改为5秒
+
+  // 窗口大小改变时重新设置canvas
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+  })
+}
+
 const typeWriter = () => {
   let i = 0
-  displayedSlogan.value = '' // 清空初始值
+  displayedSlogan.value = ''
   const timer = setInterval(() => {
     if (i < slogan.length) {
       displayedSlogan.value += slogan.charAt(i)
@@ -95,40 +211,69 @@ const typeWriter = () => {
     } else {
       clearInterval(timer)
     }
-  }, 200) // 稍微放慢速度,更有打字感
+  }, 200)
 
-  return () => clearInterval(timer) // 返回清理函数
+  return () => clearInterval(timer)
 }
 
 onMounted(() => {
+  // 初始化粒子系统
+  initParticles()
+
+  // GSAP时间线动画 - 更震撼的效果
   const tl = gsap.timeline()
 
-  tl.to(logoRef.value, {
-    opacity: 1,
-    scale: 1,
-    duration: 1.5,
-    ease: 'power3.out'
-  })
+  // Logo从远处飞入+旋转+缩放
+  tl.fromTo(logoRef.value,
+    {
+      opacity: 0,
+      scale: 0.3,
+      rotationY: 180,
+      z: -1000
+    },
+    {
+      opacity: 1,
+      scale: 1,
+      rotationY: 0,
+      z: 0,
+      duration: 2,
+      ease: 'expo.out'
+    }
+  )
 
+  // 标语淡入+打字机效果
   tl.to(sloganRef.value, {
     opacity: 1,
     duration: 0.5,
     onComplete: typeWriter
-  }, '-=0.5')
+  }, '-=1')
 
-  tl.to(subtitleRef.value, {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: 'power2.out'
-  }, '-=0.5')
+  // 副标题从下方弹入
+  tl.fromTo(subtitleRef.value,
+    { opacity: 0, y: 50 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'back.out(2)'
+    }, '-=0.5')
 
-  tl.to(ctaRef.value, {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: 'back.out(1.7)'
-  }, '-=0.5')
+  // CTA按钮依次弹入
+  tl.fromTo(ctaRef.value,
+    { opacity: 0, y: 50, scale: 0.8 },
+    {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 1,
+      ease: 'elastic.out(1, 0.5)'
+    }, '-=0.5')
+})
+
+onUnmounted(() => {
+  if (animationId) {
+    cancelAnimationFrame(animationId)
+  }
 })
 </script>
 

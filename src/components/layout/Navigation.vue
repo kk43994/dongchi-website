@@ -5,27 +5,25 @@
     <div class="container mx-auto px-6">
       <div class="flex items-center justify-between h-20">
         <!-- Logo区域 -->
-        <div class="flex items-center gap-3">
+        <router-link to="/" class="flex items-center gap-3 group">
           <div class="relative">
-            <!-- 便当盒图标 - 融合东池绿色和橙色 -->
-            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#8BC34A] to-[#689F38] flex items-center justify-center shadow-lg transform hover:rotate-6 transition-all duration-300">
-              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-              </svg>
-            </div>
-            <!-- 台湾特色装饰点 -->
-            <div class="absolute -top-1 -right-1 w-4 h-4 bg-[#FF9800] rounded-full animate-pulse"></div>
+            <!-- 东池便当真实Logo - 透明背景 -->
+            <img
+              src="../../assets/images/dongchi-logo-transparent.png"
+              alt="东池便当Logo"
+              class="h-16 w-auto object-contain transform group-hover:scale-110 transition-all duration-300"
+            />
           </div>
 
           <div class="flex flex-col">
-            <h1 :class="['text-2xl font-bold tracking-wide', scrolled ? 'text-[#8BC34A]' : 'text-white']">
+            <h1 :class="['text-2xl font-bold tracking-wide transition-colors duration-300', scrolled ? 'text-[#8BC34A]' : 'text-white']">
               东池便当
             </h1>
-            <span :class="['text-xs tracking-widest', scrolled ? 'text-[#FF9800]' : 'text-white/90']">
+            <span :class="['text-xs tracking-widest transition-colors duration-300', scrolled ? 'text-[#FF9800]' : 'text-white/90']">
               台湾风味 · 温州情怀
             </span>
           </div>
-        </div>
+        </router-link>
 
         <!-- 桌面端导航菜单 -->
         <div class="hidden lg:flex items-center gap-8">

@@ -1,6 +1,6 @@
 <template>
   <div class="about-page">
-    <!-- Hero Section - 创始人与品牌愿景 -->
+    <!-- Hero Section - 品牌愿景 -->
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-green-50 via-white to-orange-50">
       <!-- 背景装饰 -->
       <div class="absolute inset-0 opacity-30">
@@ -11,7 +11,7 @@
 
       <div class="container relative z-10 mx-auto px-6 py-20">
         <div class="grid md:grid-cols-2 gap-12 items-center">
-          <!-- 左侧：创始人照片 -->
+          <!-- 左侧：创始人照片占位符 -->
           <div class="flex justify-center" data-aos="fade-right">
             <div class="relative group">
               <!-- 照片背景光晕 -->
@@ -19,23 +19,14 @@
 
               <!-- 创始人照片容器 -->
               <div class="relative bg-white p-3 rounded-3xl shadow-2xl transform group-hover:scale-105 transition-all duration-500">
-                <div class="relative w-80 h-96 rounded-2xl overflow-hidden">
-                  <img
-                    src="/src/assets/images/founder.jpg"
-                    alt="东池便当创始人"
-                    class="w-full h-full object-cover"
-                    @error="handleImageError"
-                  >
-                  <!-- 图片加载失败时显示占位符 -->
-                  <div v-if="imageError" class="absolute inset-0 bg-gradient-to-br from-green-100 to-orange-100 flex items-center justify-center">
-                    <div class="text-center">
-                      <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-white/50 flex items-center justify-center">
-                        <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                      </div>
-                      <p class="text-gray-600 font-medium">创始人照片</p>
+                <div class="relative w-80 h-96 rounded-2xl overflow-hidden bg-gradient-to-br from-green-100 to-orange-100 flex items-center justify-center">
+                  <div class="text-center">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-white/50 flex items-center justify-center">
+                      <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                      </svg>
                     </div>
+                    <p class="text-gray-600 font-medium">创始人照片</p>
                   </div>
                 </div>
 
@@ -61,7 +52,7 @@
             </h1>
 
             <p class="text-xl text-gray-600 leading-relaxed">
-              2015年，怀揣着对台湾传统便当文化的热爱，我们的创始人将正宗的台湾便当带到了温州。
+              2004年，怀揣着对台湾传统便当文化的热爱，我们的创始人将正宗的台湾便当带到了温州。
               从一家小店到如今遍布全国的连锁品牌，东池便当始终坚持"新鲜、健康、美味"的理念。
             </p>
 
@@ -100,14 +91,58 @@
       </div>
     </section>
 
-    <!-- 创业历程时间轴 -->
-    <HistoryTimeline />
+    <!-- 创业历程时间轴 - 临时占位 -->
+    <section class="relative py-20 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+          <div class="inline-block px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
+            发展历程
+          </div>
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">品牌成长之路</h2>
+          <p class="text-xl text-gray-600">从一家小店到连锁品牌的蜕变</p>
+        </div>
+
+        <div class="max-w-4xl mx-auto">
+          <!-- 时间轴内容 - 待完善 -->
+          <div class="space-y-8">
+            <div class="flex gap-6 items-start" data-aos="fade-up">
+              <div class="flex-shrink-0 w-24 text-right">
+                <div class="text-2xl font-bold text-green-600">2004</div>
+              </div>
+              <div class="flex-1 bg-gradient-to-r from-green-50 to-orange-50 p-6 rounded-xl">
+                <h3 class="text-xl font-bold text-gray-900 mb-2">品牌创立</h3>
+                <p class="text-gray-600">首家门店在温州开业，开启东池便当传奇之旅</p>
+              </div>
+            </div>
+
+            <div class="flex gap-6 items-start" data-aos="fade-up" data-aos-delay="100">
+              <div class="flex-shrink-0 w-24 text-right">
+                <div class="text-2xl font-bold text-orange-600">2010</div>
+              </div>
+              <div class="flex-1 bg-gradient-to-r from-green-50 to-orange-50 p-6 rounded-xl">
+                <h3 class="text-xl font-bold text-gray-900 mb-2">快速扩张</h3>
+                <p class="text-gray-600">门店数量突破100家，覆盖华东地区主要城市</p>
+              </div>
+            </div>
+
+            <div class="flex gap-6 items-start" data-aos="fade-up" data-aos-delay="200">
+              <div class="flex-shrink-0 w-24 text-right">
+                <div class="text-2xl font-bold text-yellow-600">2025</div>
+              </div>
+              <div class="flex-1 bg-gradient-to-r from-green-50 to-orange-50 p-6 rounded-xl">
+                <h3 class="text-xl font-bold text-gray-900 mb-2">全国布局</h3>
+                <p class="text-gray-600">500+门店遍布全国，服务超过1000万顾客</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import HistoryTimeline from '../components/about/HistoryTimeline.vue'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
@@ -115,12 +150,6 @@ import 'aos/dist/aos.css'
 const years = ref(0)
 const stores = ref(0)
 const customers = ref(0)
-const imageError = ref(false)
-
-// 图片加载错误处理
-const handleImageError = () => {
-  imageError.value = true
-}
 
 // 数字动画
 const animateValue = (ref, start, end, duration) => {
@@ -146,7 +175,7 @@ onMounted(() => {
 
   // 启动数字滚动动画
   setTimeout(() => {
-    animateValue(years, 0, 9, 2000)
+    animateValue(years, 0, 21, 2000)
     animateValue(stores, 0, 500, 2000)
     animateValue(customers, 0, 1000, 2000)
   }, 500)

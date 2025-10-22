@@ -1,11 +1,13 @@
 <template>
   <div id="app">
     <router-view />
+    <!-- 全局鼠标跟随特效 -->
+    <MouseFollower />
   </div>
 </template>
 
 <script setup>
-// 根组件，使用路由视图
+import MouseFollower from './components/shared/MouseFollower.vue'
 </script>
 
 <style>

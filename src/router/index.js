@@ -47,11 +47,9 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { top: 0, behavior: 'smooth' }
-    }
+    // 总是滚动到顶部，确保用户体验一致
+    // 不使用savedPosition，避免刷新时跳到之前的位置
+    return { top: 0, behavior: 'instant' }
   }
 })
 

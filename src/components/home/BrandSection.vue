@@ -214,27 +214,95 @@
         </div>
       </div>
 
-      <!-- 品牌承诺 - 大号文字 -->
-      <div class="text-center max-w-5xl mx-auto" data-aos="fade-up" data-aos-delay="200">
-        <div class="relative p-16 bg-gradient-to-r from-[#8BC34A] via-[#689F38] to-[#FF9800] rounded-3xl shadow-2xl overflow-hidden">
-          <!-- 背景装饰 -->
-          <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-            <div class="absolute bottom-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-          </div>
+      <!-- 品牌承诺 - 创始人寄语 (现代简洁设计) -->
+      <div class="max-w-7xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-0">
+            <!-- 左侧：创始人照片 (40%宽度) -->
+            <div class="lg:col-span-2 relative bg-gradient-to-br from-[#8BC34A]/5 to-[#FF9800]/5 p-12 flex items-center justify-center" data-aos="fade-right" data-aos-delay="300">
+              <div class="relative w-full max-w-sm">
+                <!-- 照片容器 - 简洁现代风格 -->
+                <div class="relative aspect-square rounded-2xl overflow-hidden shadow-2xl group">
+                  <img
+                    src="../../assets/images/founder.png"
+                    alt="东池便当创始人 张宪清"
+                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <!-- 悬停渐变遮罩 -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </div>
 
-          <div class="relative z-10">
-            <h3 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-              我们承诺
-            </h3>
-            <p class="text-2xl md:text-3xl text-white/95 leading-relaxed font-medium">
-              "用良心做良食，让每一位顾客吃得安心、放心、开心"
-            </p>
-            <div class="mt-8 flex items-center justify-center gap-3 text-white/90">
-              <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-              </svg>
-              <span class="text-xl font-semibold">东池便当创始人 张宪清</span>
+                <!-- 简洁标签 -->
+                <div class="mt-8 text-center">
+                  <h4 class="text-2xl font-bold text-gray-900 mb-2">张宪清</h4>
+                  <p class="text-[#8BC34A] font-semibold text-lg">创始人 & CEO</p>
+                  <div class="mt-4 flex items-center justify-center gap-3">
+                    <div class="h-1 w-12 bg-gradient-to-r from-[#8BC34A] to-[#FF9800] rounded-full"></div>
+                    <span class="text-sm text-gray-500">Est. 2004</span>
+                    <div class="h-1 w-12 bg-gradient-to-r from-[#FF9800] to-[#8BC34A] rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 右侧：创始人寄语 (60%宽度) -->
+            <div class="lg:col-span-3 p-12 md:p-16 flex flex-col justify-center space-y-8" data-aos="fade-left" data-aos-delay="400">
+              <!-- 标题 -->
+              <div>
+                <span class="inline-block text-[#8BC34A] text-sm font-bold tracking-widest uppercase mb-3">Founder's Message</span>
+                <h3 class="text-4xl md:text-5xl font-bold text-gray-900">
+                  创始人寄语
+                </h3>
+              </div>
+
+              <!-- 引言 -->
+              <div class="relative pl-6 border-l-4 border-[#8BC34A] space-y-4">
+                <p class="text-2xl md:text-3xl text-gray-800 leading-relaxed font-medium">
+                  用良心做良食
+                </p>
+                <p class="text-xl md:text-2xl text-gray-700 leading-relaxed">
+                  让每一位顾客吃得安心、放心、开心
+                </p>
+              </div>
+
+              <!-- 正文 -->
+              <p class="text-lg text-gray-600 leading-relaxed">
+                2004年，我从台湾来到温州，带着对美食的热爱和对品质的坚持，创立了东池便当。20年来，我们始终秉承"良心良食"的理念，用心做好每一份便当。感谢每一位信任东池的顾客，你们的支持是我们不断前进的动力。
+              </p>
+
+              <!-- SVG手写签名动画 -->
+              <div class="pt-4">
+                <svg ref="signatureSvg" class="signature-svg" width="240" height="80" viewBox="0 0 240 80" xmlns="http://www.w3.org/2000/svg">
+                  <!-- 张 -->
+                  <path ref="signaturePath1" class="signature-path" d="M20,25 Q30,15 40,25 T60,25 M30,25 L30,50 M20,40 L40,40 M25,50 L35,60"
+                    stroke="#8BC34A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                  <!-- 宪 -->
+                  <path ref="signaturePath2" class="signature-path" d="M80,20 L80,60 M70,30 L90,30 M70,45 L90,45 M95,25 Q100,30 95,35"
+                    stroke="#8BC34A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                  <!-- 清 -->
+                  <path ref="signaturePath3" class="signature-path" d="M120,25 L120,60 M110,35 L130,35 M140,20 Q150,25 145,35 Q140,45 150,50 L150,60"
+                    stroke="#8BC34A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p class="text-sm text-gray-400 mt-2">—— 创始人签名</p>
+              </div>
+
+              <!-- 数据指标 -->
+              <div class="grid grid-cols-3 gap-6 pt-6 border-t border-gray-100">
+                <div>
+                  <p class="text-4xl font-bold bg-gradient-to-r from-[#8BC34A] to-[#689F38] bg-clip-text text-transparent">20+</p>
+                  <p class="text-sm text-gray-500 mt-1">深耕年份</p>
+                </div>
+                <div>
+                  <p class="text-4xl font-bold bg-gradient-to-r from-[#FF9800] to-[#F57C00] bg-clip-text text-transparent">600+</p>
+                  <p class="text-sm text-gray-500 mt-1">连锁门店</p>
+                </div>
+                <div>
+                  <p class="text-4xl font-bold bg-gradient-to-r from-[#8BC34A] to-[#FF9800] bg-clip-text text-transparent">100+</p>
+                  <p class="text-sm text-gray-500 mt-1">覆盖城市</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -258,6 +326,10 @@ const card1 = ref(null)
 const card2 = ref(null)
 const card3 = ref(null)
 const card4 = ref(null)
+const signatureSvg = ref(null)
+const signaturePath1 = ref(null)
+const signaturePath2 = ref(null)
+const signaturePath3 = ref(null)
 
 onMounted(() => {
   // 视差背景动画
@@ -333,6 +405,40 @@ onMounted(() => {
       }
     })
   })
+
+  // SVG签名动画 - stroke-dasharray技术实现真实书写效果
+  if (signaturePath1.value && signaturePath2.value && signaturePath3.value) {
+    const paths = [signaturePath1.value, signaturePath2.value, signaturePath3.value]
+
+    // 获取每个路径的总长度
+    paths.forEach(path => {
+      const length = path.getTotalLength()
+      // 初始化：设置dasharray和dashoffset为路径长度（完全隐藏）
+      path.style.strokeDasharray = length
+      path.style.strokeDashoffset = length
+    })
+
+    // 滚动触发动画
+    ScrollTrigger.create({
+      trigger: signatureSvg.value,
+      start: 'top 80%',
+      onEnter: () => {
+        // 依次绘制三个字，模拟真实书写顺序
+        const timeline = gsap.timeline()
+
+        paths.forEach((path, index) => {
+          const length = path.getTotalLength()
+          timeline.to(path, {
+            strokeDashoffset: 0,
+            duration: 1.5,
+            ease: 'power2.inOut',
+            delay: index * 0.3  // 每个字延迟0.3秒，营造逐字书写效果
+          }, index * 0.5)
+        })
+      },
+      once: true
+    })
+  }
 })
 </script>
 
@@ -349,5 +455,16 @@ onMounted(() => {
 /* 阴影增强 */
 .shadow-3xl {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* SVG签名样式 */
+.signature-svg {
+  filter: drop-shadow(0 2px 4px rgba(139, 195, 74, 0.2));
+}
+
+.signature-path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* 初始状态通过JavaScript设置 */
 }
 </style>

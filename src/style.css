@@ -48,6 +48,7 @@ html {
 body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  cursor: none; /* 隐藏系统默认鼠标指针 */
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }

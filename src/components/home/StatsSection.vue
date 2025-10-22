@@ -9,13 +9,17 @@
         <div class="w-24 h-1 bg-[#8BC34A] mx-auto"></div>
       </div>
 
-      <!-- 数据卡片 -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <!-- 数据卡片 - 3D透视容器 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto" style="perspective: 1500px;">
         <!-- 门店数量 -->
         <div
-          class="relative bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 group overflow-hidden"
-          data-aos="zoom-in"
+          ref="card1"
+          class="stat-card relative bg-gradient-to-br from-white via-white to-green-50 rounded-2xl p-8 text-center shadow-2xl border border-gray-100 group overflow-hidden"
+          data-aos="flip-left"
           data-aos-delay="0"
+          @mouseenter="handleMouseEnter($event, 0)"
+          @mousemove="handleMouseMove"
+          @mouseleave="handleMouseLeave"
         >
           <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8BC34A] to-[#689F38] flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
             <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -29,9 +33,13 @@
 
         <!-- 覆盖城市 -->
         <div
-          class="relative bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 group overflow-hidden"
-          data-aos="zoom-in"
+          ref="card2"
+          class="stat-card relative bg-gradient-to-br from-white via-white to-orange-50 rounded-2xl p-8 text-center shadow-2xl border border-gray-100 group overflow-hidden"
+          data-aos="flip-up"
           data-aos-delay="100"
+          @mouseenter="handleMouseEnter($event, 1)"
+          @mousemove="handleMouseMove"
+          @mouseleave="handleMouseLeave"
         >
           <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8BC34A] to-[#689F38] flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
             <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -45,9 +53,13 @@
 
         <!-- 年销售额 -->
         <div
-          class="relative bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 group overflow-hidden"
-          data-aos="zoom-in"
+          ref="card3"
+          class="stat-card relative bg-gradient-to-br from-white via-white to-yellow-50 rounded-2xl p-8 text-center shadow-2xl border border-gray-100 group overflow-hidden"
+          data-aos="flip-right"
           data-aos-delay="200"
+          @mouseenter="handleMouseEnter($event, 2)"
+          @mousemove="handleMouseMove"
+          @mouseleave="handleMouseLeave"
         >
           <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8BC34A] to-[#689F38] flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
             <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -83,8 +95,12 @@ import { useIntersectionObserver } from '@vueuse/core'
 const storesRef = ref(null)
 const citiesRef = ref(null)
 const salesRef = ref(null)
+const card1 = ref(null)
+const card2 = ref(null)
+const card3 = ref(null)
 
 let hasAnimated = false
+let currentCard = null
 
 onMounted(() => {
   const { stop } = useIntersectionObserver(
@@ -125,4 +141,76 @@ const startCounters = () => {
   })
   salesCounter.start()
 }
+
+// 3D卡片鼠标跟随倾斜效果
+const handleMouseEnter = (e, index) => {
+  const cards = [card1.value, card2.value, card3.value]
+  currentCard = cards[index]
+}
+
+const handleMouseMove = (e) => {
+  if (!currentCard) return
+
+  const rect = currentCard.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  const y = e.clientY - rect.top
+
+  const centerX = rect.width / 2
+  const centerY = rect.height / 2
+
+  const rotateX = ((y - centerY) / centerY) * -15  // 倾斜角度
+  const rotateY = ((x - centerX) / centerX) * 15
+
+  currentCard.style.transform = `
+    perspective(1000px)
+    rotateX(${rotateX}deg)
+    rotateY(${rotateY}deg)
+    scale3d(1.05, 1.05, 1.05)
+    translateZ(20px)
+  `
+  currentCard.style.transition = 'transform 0.1s ease-out'
+}
+
+const handleMouseLeave = () => {
+  if (!currentCard) return
+
+  currentCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1) translateZ(0px)'
+  currentCard.style.transition = 'transform 0.5s ease-out'
+  currentCard = null
+}
 </script>
+
+<style scoped>
+.stat-card {
+  transform-style: preserve-3d;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(139, 195, 74, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+/* 卡片发光效果 */
+.stat-card:hover {
+  box-shadow:
+    0 20px 60px -10px rgba(139, 195, 74, 0.3),
+    0 0 40px -10px rgba(255, 152, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+</style>
