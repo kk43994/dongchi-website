@@ -1,0 +1,1 @@
+import{_ as t,c as s,d as a,b as o}from"./index-B9aLdGQA.js";const _={class:"quality-page"},l={__name:"QualityPage",setup(c){return(n,e)=>(o(),s("div",_,[...e[0]||(e[0]=[a("h1",null,"品质保障",-1),a("p",null,"页面开发中...",-1)])]))}},p=t(l,[["__scopeId","data-v-8dea3448"]]);export{p as default};

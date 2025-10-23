@@ -1,0 +1,1 @@
+import{_ as t,c as o,d as s,b as a}from"./index-B9aLdGQA.js";const r={class:"stores-page"},_={__name:"StoresPage",setup(c){return(n,e)=>(a(),o("div",r,[...e[0]||(e[0]=[s("h1",null,"门店查询",-1),s("p",null,"页面开发中...",-1)])]))}},l=t(_,[["__scopeId","data-v-64b845c5"]]);export{l as default};

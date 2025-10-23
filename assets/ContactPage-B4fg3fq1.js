@@ -1,0 +1,1 @@
+import{_ as a,c as o,d as e,b as s}from"./index-B9aLdGQA.js";const c={class:"contact-page"},n={__name:"ContactPage",setup(_){return(r,t)=>(s(),o("div",c,[...t[0]||(t[0]=[e("h1",null,"联系我们",-1),e("p",null,"页面开发中...",-1)])]))}},l=a(n,[["__scopeId","data-v-34810212"]]);export{l as default};

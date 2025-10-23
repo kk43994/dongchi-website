@@ -1,0 +1,1 @@
+import{_ as a,c as t,d as s,b as o}from"./index-B9aLdGQA.js";const _={class:"news-page"},n={__name:"NewsPage",setup(c){return(r,e)=>(o(),t("div",_,[...e[0]||(e[0]=[s("h1",null,"新闻资讯",-1),s("p",null,"页面开发中...",-1)])]))}},l=a(n,[["__scopeId","data-v-a6da1686"]]);export{l as default};
