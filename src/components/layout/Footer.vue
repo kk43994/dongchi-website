@@ -56,12 +56,14 @@
             快速链接
           </h3>
           <ul class="space-y-3 text-sm">
-            <li><a href="#about" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">关于我们</a></li>
-            <li><a href="#products" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">产品中心</a></li>
-            <li><a href="#quality" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">品质保障</a></li>
-            <li><a href="#franchise" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">加盟合作</a></li>
-            <li><a href="#stores" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">门店查询</a></li>
-            <li><a href="#news" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">新闻资讯</a></li>
+            <li><router-link to="/" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">首页</router-link></li>
+            <li><router-link to="/about" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">关于我们</router-link></li>
+            <li><router-link to="/products" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">产品中心</router-link></li>
+            <li><router-link to="/quality" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">品质保障</router-link></li>
+            <li><router-link to="/franchise" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">加盟合作</router-link></li>
+            <li><router-link to="/stores" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">门店查询</router-link></li>
+            <li><router-link to="/news" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">新闻资讯</router-link></li>
+            <li><router-link to="/contact" class="text-white/80 hover:text-white hover:translate-x-1 inline-block transition-all duration-200">联系我们</router-link></li>
           </ul>
         </div>
 
@@ -78,8 +80,8 @@
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
                 </svg>
                 <div>
-                  <div class="text-white/60 text-xs mb-1">加盟热线</div>
-                  <a href="tel:400-888-8888" class="text-white font-bold hover:text-[#FF9800] transition-colors">400-888-8888</a>
+                  <div class="text-white/60 text-xs mb-1">客服热线</div>
+                  <a href="tel:400-8598898" class="text-white font-bold hover:text-[#FF9800] transition-colors">400-8598898</a>
                 </div>
               </div>
             </li>
@@ -90,8 +92,8 @@
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
                 </svg>
                 <div>
-                  <div class="text-white/60 text-xs mb-1">商务合作</div>
-                  <a href="mailto:contact@dongchibd.com" class="text-white hover:text-[#FF9800] transition-colors break-all">contact@dongchibd.com</a>
+                  <div class="text-white/60 text-xs mb-1">企业邮箱</div>
+                  <a href="mailto:service@dongchi.com" class="text-white hover:text-[#FF9800] transition-colors break-all">service@dongchi.com</a>
                 </div>
               </div>
             </li>
@@ -102,7 +104,7 @@
                 </svg>
                 <div>
                   <div class="text-white/60 text-xs mb-1">总部地址</div>
-                  <p class="text-white text-sm">浙江省温州市</p>
+                  <p class="text-white text-sm leading-relaxed">浙江省温州市鹿城区<br>南郊街道划龙桥路655号</p>
                 </div>
               </div>
             </li>

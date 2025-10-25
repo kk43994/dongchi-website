@@ -1,5 +1,11 @@
 <template>
   <div class="products-page">
+    <!-- 全局导航栏 -->
+    <Navigation />
+
+    <!-- 面包屑导航 -->
+    <Breadcrumb />
+
     <!-- 粒子背景 -->
     <ParticleBackground :particle-count="50" />
     <!-- 鼠标跟随光晕 -->
@@ -9,7 +15,7 @@
     <!-- 返回顶部按钮 -->
     <BackToTop />
     <!-- Hero Section -->
-    <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-orange-600 via-orange-500 to-yellow-500">
+    <section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-orange-600 via-orange-500 to-yellow-500">
       <!-- 背景装饰 -->
       <div class="absolute inset-0 opacity-20">
         <div class="absolute top-20 left-20 w-96 h-96 bg-white rounded-full filter blur-3xl animate-pulse"></div>
@@ -19,11 +25,7 @@
       <!-- 内容 -->
       <div class="relative z-10 container mx-auto px-6 text-center text-white py-20">
         <div data-aos="fade-up">
-          <div class="inline-block px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full text-sm font-bold mb-6 border border-white/30">
-            🍱 台湾风味 · 匠心之作
-          </div>
-
-          <h1 class="text-6xl md:text-7xl font-bold mb-6 leading-tight">
+          <h1 class="text-6xl md:text-7xl font-bold mb-6 leading-tight mt-8">
             东池美食<br>
             <span class="text-white/90">为您精选</span>
           </h1>
@@ -100,7 +102,7 @@
     </section>
 
     <!-- 热销榜单 -->
-    <section class="py-16 bg-gradient-to-b from-orange-50 to-white">
+    <section class="py-20 bg-gradient-to-b from-orange-50 to-white">
       <div class="container mx-auto px-6">
         <div class="text-center mb-12" data-aos="fade-up">
           <div class="inline-block px-4 py-2 bg-red-100 text-red-600 rounded-full text-sm font-medium mb-4">
@@ -489,14 +491,20 @@
         </div>
       </Transition>
     </Teleport>
+
+    <!-- Footer -->
+    <Footer />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Autoplay, Pagination, Navigation } from 'swiper/modules'
+import { Autoplay, Pagination, Navigation as SwiperNavigation } from 'swiper/modules'
 import AOS from 'aos'
+import Navigation from '@/components/layout/Navigation.vue'
+import Footer from '@/components/layout/Footer.vue'
+import Breadcrumb from '@/components/shared/Breadcrumb.vue'
 import ScrollProgress from '@/components/shared/ScrollProgress.vue'
 import BackToTop from '@/components/shared/BackToTop.vue'
 import MouseFollower from '@/components/shared/MouseFollower.vue'
@@ -506,7 +514,7 @@ import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 import 'aos/dist/aos.css'
 
-const swiperModules = [Autoplay, Pagination, Navigation]
+const swiperModules = [Autoplay, Pagination, SwiperNavigation]
 
 // 分类
 const categories = ref([

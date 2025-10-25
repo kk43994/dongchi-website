@@ -1,5 +1,11 @@
 <template>
   <div class="franchise-page">
+    <!-- 全局导航栏 -->
+    <Navigation />
+
+    <!-- 面包屑导航 -->
+    <Breadcrumb />
+
     <!-- 粒子背景 -->
     <ParticleBackground :particle-count="60" />
     <!-- 鼠标跟随光晕 -->
@@ -9,7 +15,7 @@
     <!-- 返回顶部按钮 -->
     <BackToTop />
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-green-900 via-green-700 to-orange-600">
+    <section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-green-900 via-green-700 to-orange-600">
       <!-- 背景图片 -->
       <div class="absolute inset-0 opacity-30">
         <div class="w-full h-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1920&q=80')"></div>
@@ -25,11 +31,7 @@
       <!-- 内容 -->
       <div class="relative z-10 container mx-auto px-6 text-center text-white">
         <div data-aos="fade-up">
-          <div class="inline-block px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full text-sm font-bold mb-8 border border-white/30">
-            💼 携手东池，共创财富未来
-          </div>
-
-          <h1 class="text-6xl md:text-8xl font-bold mb-8 leading-tight">
+          <h1 class="text-6xl md:text-8xl font-bold mb-8 leading-tight mt-8">
             加盟东池便当<br>
             <span class="text-gradient-gold">开启财富之门</span>
           </h1>
@@ -329,7 +331,7 @@
     </section>
 
     <!-- 加盟流程 -->
-    <section class="py-20 bg-white">
+    <section class="py-20 bg-gradient-to-b from-orange-50 to-white">
       <div class="container mx-auto px-6">
         <!-- 标题 -->
         <div class="text-center mb-20" data-aos="fade-up">
@@ -651,7 +653,7 @@
     </section>
 
     <!-- FAQ常见问题 -->
-    <section class="py-20 bg-white">
+    <section class="py-20 bg-gradient-to-b from-white to-gray-50">
       <div class="container mx-auto px-6">
         <!-- 标题 -->
         <div class="text-center mb-20" data-aos="fade-up">
@@ -724,6 +726,9 @@
         </div>
       </div>
     </section>
+
+    <!-- Footer -->
+    <Footer />
   </div>
 </template>
 
@@ -732,6 +737,9 @@ import { ref, computed, onMounted } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Autoplay, Pagination } from 'swiper/modules'
 import AOS from 'aos'
+import Navigation from '@/components/layout/Navigation.vue'
+import Footer from '@/components/layout/Footer.vue'
+import Breadcrumb from '@/components/shared/Breadcrumb.vue'
 import ScrollProgress from '@/components/shared/ScrollProgress.vue'
 import BackToTop from '@/components/shared/BackToTop.vue'
 import MouseFollower from '@/components/shared/MouseFollower.vue'

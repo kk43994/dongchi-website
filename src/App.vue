@@ -1,13 +1,16 @@
 <template>
   <div id="app">
     <router-view />
-    <!-- 全局鼠标跟随特效 -->
-    <MouseFollower />
+    <!-- 全局鼠标跟随特效 - 超轻量级性能优化版 -->
+    <SimpleCursor />
+    <!-- 全局返回主页按钮 -->
+    <HomeButton />
   </div>
 </template>
 
 <script setup>
-import MouseFollower from './components/shared/MouseFollower.vue'
+import SimpleCursor from './components/shared/SimpleCursor.vue'
+import HomeButton from './components/shared/HomeButton.vue'
 </script>
 
 <style>
