@@ -1,0 +1,239 @@
+/**
+ * 全局性能优化CSS
+ * GPU硬件加速 + 防止回流重绘
+ */
+
+/* ========== GPU硬件加速基础类 ========== */
+
+/* 开启GPU加速 - 为所有动画元素 */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform, opacity;
+}
+
+/* 强制创建合成层 */
+.composite-layer {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* ========== 动画性能优化 ========== */
+
+/* 只使用transform和opacity进行动画 */
+.performant-animation {
+  /* 提示浏览器这些属性会改变 */
+  will-change: transform, opacity;
+  /* 开启硬件加速 */
+  transform: translateZ(0);
+  /* 防止字体模糊 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 平滑过渡 - 60fps */
+.smooth-transition {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  /* 使用硬件加速 */
+  transform: translateZ(0);
+}
+
+/* ========== 防止回流重绘 ========== */
+
+/* 图片容器 - 避免布局抖动 */
+.img-container {
+  /* 使用contain优化渲染 */
+  contain: layout style paint;
+  /* GPU加速 */
+  transform: translateZ(0);
+}
+
+/* 独立图层的元素 */
+.isolated-layer {
+  /* 创建新的堆叠上下文 */
+  isolation: isolate;
+  /* GPU加速 */
+  transform: translate3d(0, 0, 0);
+}
+
+/* ========== 粒子背景优化 ========== */
+
+.particle-canvas {
+  /* 固定定位不触发回流 */
+  position: fixed;
+  /* GPU加速 */
+  transform: translateZ(0);
+  /* 创建独立渲染层 */
+  will-change: contents;
+  /* 优化合成 */
+  contain: strict;
+}
+
+/* ========== Swiper轮播优化 ========== */
+
+.swiper-optimized {
+  /* GPU加速 */
+  transform: translate3d(0, 0, 0);
+  /* 预先告知浏览器 */
+  will-change: transform;
+  /* 优化渲染 */
+  contain: layout style paint;
+}
+
+.swiper-slide {
+  /* 每个slide独立图层 */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ========== 产品卡片优化 ========== */
+
+.product-card {
+  /* GPU加速 */
+  transform: translateZ(0);
+  /* 独立合成层 */
+  will-change: transform, opacity;
+  /* 优化包含 */
+  contain: layout style paint;
+}
+
+.product-card:hover {
+  /* 只使用transform，不使用top/left */
+  transform: translateZ(0) translateY(-10px) scale(1.02);
+}
+
+/* ========== 鼠标跟随效果优化 ========== */
+
+.mouse-follower {
+  /* 绝对定位 + GPU */
+  position: fixed;
+  transform: translate3d(var(--x), var(--y), 0);
+  /* 告知浏览器transform会变化 */
+  will-change: transform;
+  /* 指针事件穿透 */
+  pointer-events: none;
+}
+
+/* ========== 滚动性能优化 ========== */
+
+.scroll-container {
+  /* 使用GPU加速滚动 */
+  -webkit-overflow-scrolling: touch;
+  /* 优化滚动性能 */
+  scroll-behavior: smooth;
+  /* 创建独立层 */
+  transform: translateZ(0);
+}
+
+/* ========== AOS动画优化 ========== */
+
+[data-aos] {
+  /* 预先启用GPU加速 */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* ========== 响应式图片优化 ========== */
+
+img {
+  /* 防止图片加载时的布局抖动 */
+  content-visibility: auto;
+  /* GPU加速 */
+  transform: translateZ(0);
+}
+
+/* ========== 面包屑导航优化 ========== */
+
+.breadcrumb-item {
+  /* GPU加速动画 */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* ========== 导航栏优化 ========== */
+
+nav {
+  /* 固定导航使用GPU */
+  transform: translateZ(0);
+  /* 独立渲染层 */
+  will-change: transform;
+  /* 优化包含 */
+  contain: layout style paint;
+}
+
+/* ========== 模态框/弹窗优化 ========== */
+
+.modal-backdrop {
+  /* GPU加速背景模糊 */
+  backdrop-filter: blur(10px);
+  transform: translateZ(0);
+  will-change: opacity;
+}
+
+/* ========== 防止过度优化 ========== */
+
+/* 动画完成后移除will-change */
+.animation-complete {
+  will-change: auto !important;
+}
+
+/* ========== 移动端特殊优化 ========== */
+
+@media (max-width: 768px) {
+  /* 移动端减少动画复杂度 */
+  .reduce-motion-mobile {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.3s !important;
+  }
+
+  /* 移动端简化效果 */
+  .mobile-simple {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+}
+
+/* ========== 高性能模式 ========== */
+
+/* 为低端设备提供降级方案 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========== CSS Containment优化 ========== */
+
+/* 独立的组件容器 */
+.component-container {
+  /* 告诉浏览器这个容器是独立的 */
+  contain: layout style paint;
+  /* GPU加速 */
+  transform: translateZ(0);
+}
+
+/* ========== 文字渲染优化 ========== */
+
+.optimized-text {
+  /* 优化文字渲染 */
+  text-rendering: optimizeSpeed;
+  /* 防止字体闪烁 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========== 性能监控辅助 ========== */
+
+/* 开发环境：标记卡顿元素 */
+.debug-performance {
+  outline: 2px solid red !important;
+}
+
+/* 开发环境：标记重绘元素 */
+.debug-repaint {
+  outline: 2px solid yellow !important;
+}

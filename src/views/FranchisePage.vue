@@ -89,7 +89,7 @@
     </section>
 
     <!-- 加盟优势 -->
-    <section class="py-20 bg-gradient-to-b from-white to-gray-50">
+    <section id="advantages" class="py-20 bg-gradient-to-b from-white to-gray-50">
       <div class="container mx-auto px-6">
         <!-- 标题 -->
         <div class="text-center mb-20" data-aos="fade-up">
@@ -331,7 +331,7 @@
     </section>
 
     <!-- 加盟流程 -->
-    <section class="py-20 bg-gradient-to-b from-orange-50 to-white">
+    <section id="process" class="py-20 bg-gradient-to-b from-orange-50 to-white">
       <div class="container mx-auto px-6">
         <!-- 标题 -->
         <div class="text-center mb-20" data-aos="fade-up">
@@ -393,7 +393,7 @@
     </section>
 
     <!-- 成功案例 -->
-    <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <section id="cases" class="py-20 bg-gradient-to-b from-gray-50 to-white">
       <div class="container mx-auto px-6">
         <!-- 标题 -->
         <div class="text-center mb-20" data-aos="fade-up">

@@ -1,101 +1,96 @@
 <template>
-  <!-- 放大透镜鼠标效果 - 毛玻璃 + 外发光 -->
+  <!-- 简化版鼠标跟随效果 - 轻量高性能 -->
   <div class="mouse-effects">
-    <!-- 主透镜 - 毛玻璃放大镜 -->
+    <!-- 外圈 - 简单圆环 -->
     <div
-      ref="magnifier"
-      class="magnifier"
-    >
-      <!-- 透镜边框 -->
-      <div class="magnifier-ring"></div>
-    </div>
+      ref="cursorRing"
+      class="cursor-ring mouse-follower gpu-accelerated"
+      :style="ringStyle"
+    ></div>
 
     <!-- 中心点 -->
     <div
       ref="cursorDot"
-      class="cursor-dot"
+      class="cursor-dot mouse-follower gpu-accelerated"
+      :style="dotStyle"
     ></div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import gsap from 'gsap'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-const magnifier = ref(null)
+const cursorRing = ref(null)
 const cursorDot = ref(null)
+
+// 使用响应式状态控制位置
+const ringX = ref(0)
+const ringY = ref(0)
+const dotX = ref(0)
+const dotY = ref(0)
+const isHovering = ref(false)
+
+// 计算样式 - 使用 transform（高性能）
+const ringStyle = computed(() => ({
+  transform: `translate3d(${ringX.value}px, ${ringY.value}px, 0) scale(${isHovering.value ? 1.5 : 1})`,
+  opacity: isHovering.value ? 0.6 : 1
+}))
+
+const dotStyle = computed(() => ({
+  transform: `translate3d(${dotX.value}px, ${dotY.value}px, 0) scale(${isHovering.value ? 0.8 : 1})`,
+  opacity: isHovering.value ? 0.8 : 1
+}))
 
 let mouseX = 0
 let mouseY = 0
+let rafId = null
+const clickableSelector = 'a, button, [role="button"], input, textarea, select'
+
+// 使用 RAF 节流的鼠标跟随
+const updateCursorPosition = () => {
+  // 外圈：平滑跟随（延迟效果）
+  ringX.value += (mouseX - 20 - ringX.value) * 0.12
+  ringY.value += (mouseY - 20 - ringY.value) * 0.12
+
+  // 中心点：快速跟随
+  dotX.value += (mouseX - 4 - dotX.value) * 0.5
+  dotY.value += (mouseY - 4 - dotY.value) * 0.5
+
+  rafId = requestAnimationFrame(updateCursorPosition)
+}
+
+const handleMouseMove = (e) => {
+  mouseX = e.clientX
+  mouseY = e.clientY
+}
+
+const handleMouseOver = (e) => {
+  isHovering.value = !!e.target.closest(clickableSelector)
+}
+
+const handleMouseOut = (e) => {
+  const nextTarget = e.relatedTarget
+  isHovering.value = !!nextTarget?.closest?.(clickableSelector)
+}
 
 onMounted(() => {
-  // 鼠标移动事件
-  const handleMouseMove = (e) => {
-    mouseX = e.clientX
-    mouseY = e.clientY
+  // 添加事件监听 - 使用 passive 优化
+  document.addEventListener('mousemove', handleMouseMove, { passive: true })
+  document.addEventListener('mouseover', handleMouseOver, { passive: true })
+  document.addEventListener('mouseout', handleMouseOut, { passive: true })
 
-    // 小圆点：延迟跟随，产生拖尾感
-    gsap.to(magnifier.value, {
-      x: mouseX - 10,  // 圆点半径20px，减去10居中
-      y: mouseY - 10,
-      duration: 0.2,
-      ease: 'power2.out'
-    })
+  // 启动 RAF 循环
+  rafId = requestAnimationFrame(updateCursorPosition)
+})
 
-    // 中心点：快速跟随
-    gsap.to(cursorDot.value, {
-      x: mouseX - 3,  // 点半径6px，减去3居中
-      y: mouseY - 3,
-      duration: 0.05,
-      ease: 'power1.out'
-    })
+onUnmounted(() => {
+  if (rafId) {
+    cancelAnimationFrame(rafId)
   }
 
-  // 悬停在链接/按钮上时放大透镜
-  const handleMouseEnter = () => {
-    gsap.to(magnifier.value, {
-      scale: 1.3,
-      duration: 0.4,
-      ease: 'back.out(1.5)'
-    })
-
-    gsap.to(cursorDot.value, {
-      scale: 0,
-      duration: 0.3
-    })
-  }
-
-  const handleMouseLeave = () => {
-    gsap.to(magnifier.value, {
-      scale: 1,
-      duration: 0.4,
-      ease: 'power2.out'
-    })
-
-    gsap.to(cursorDot.value, {
-      scale: 1,
-      duration: 0.3
-    })
-  }
-
-  // 添加事件监听
-  document.addEventListener('mousemove', handleMouseMove)
-
-  // 为所有可点击元素添加悬停效果
-  const clickableElements = document.querySelectorAll('a, button, [role="button"], input, textarea, select')
-  clickableElements.forEach(el => {
-    el.addEventListener('mouseenter', handleMouseEnter)
-    el.addEventListener('mouseleave', handleMouseLeave)
-  })
-
-  // 清理函数
-  onUnmounted(() => {
-    document.removeEventListener('mousemove', handleMouseMove)
-    clickableElements.forEach(el => {
-      el.removeEventListener('mouseenter', handleMouseEnter)
-      el.removeEventListener('mouseleave', handleMouseLeave)
-    })
-  })
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseover', handleMouseOver)
+  document.removeEventListener('mouseout', handleMouseOut)
 })
 </script>
 
@@ -105,136 +100,51 @@ onMounted(() => {
   cursor: none !important;
 }
 
-/* 主光标 - 小圆点毛玻璃 + 强发光描边 */
-.magnifier {
+/* 外圈 - 简单圆环 - 轻量设计 */
+.cursor-ring {
   position: fixed;
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 10020;
   left: 0;
   top: 0;
-  will-change: transform;
 
-  /* 增强的毛玻璃效果 */
-  backdrop-filter: blur(8px) saturate(180%) brightness(130%);
-  -webkit-backdrop-filter: blur(8px) saturate(180%) brightness(130%);
+  /* GPU加速优化 */
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 
-  /* 更明显的渐变背景 */
-  background: radial-gradient(circle,
-    rgba(139, 195, 74, 0.5) 0%,
-    rgba(255, 152, 0, 0.4) 100%
-  );
+  /* 简单边框 - 东池品牌色 */
+  border: 2px solid rgba(139, 195, 74, 0.6);
+  background: transparent;
 
-  /* 强发光描边（绿橙双色边框） */
-  border: 2px solid transparent;
-  background-clip: padding-box;
-
-  /* 明显的外发光效果（橙绿配色） + 强描边发光 */
-  box-shadow:
-    /* 描边发光层1：绿色内描边 */
-    inset 0 0 8px rgba(139, 195, 74, 1),
-    inset 0 0 16px rgba(139, 195, 74, 0.8),
-    /* 描边发光层2：橙色外描边 */
-    0 0 4px rgba(255, 152, 0, 1),
-    0 0 8px rgba(255, 152, 0, 0.9),
-    /* 外发光层1：强烈绿色发光 */
-    0 0 20px rgba(139, 195, 74, 0.8),
-    /* 外发光层2：强烈橙色发光 */
-    0 0 35px rgba(255, 152, 0, 0.7),
-    /* 外发光层3：大范围绿色发光 */
-    0 0 50px rgba(139, 195, 74, 0.5),
-    /* 外发光层4：超大范围橙色发光 */
-    0 0 70px rgba(255, 152, 0, 0.4);
-
-  /* 微妙的脉冲动画 */
-  animation: magnifier-pulse 2s ease-in-out infinite;
-}
-
-/* 移除边框元素（不再需要） */
-.magnifier-ring {
-  display: none;
+  /* 平滑过渡 */
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
 }
 
 /* 中心点 - 快速跟随指示器 */
 .cursor-dot {
   position: fixed;
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 10000;
+  z-index: 10021;
   left: 0;
   top: 0;
-  will-change: transform;
 
-  /* 渐变背景 */
-  background: radial-gradient(circle,
-    #8BC34A 0%,
-    #FF9800 100%
-  );
+  /* GPU加速优化 */
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 
-  /* 强烈发光 */
-  box-shadow:
-    0 0 8px rgba(139, 195, 74, 1),
-    0 0 16px rgba(255, 152, 0, 0.8),
-    0 0 24px rgba(139, 195, 74, 0.6);
+  /* 简单纯色 - 东池橙色 */
+  background: #FF9800;
 
-  /* 脉冲动画 */
-  animation: dot-pulse 1.5s ease-in-out infinite;
-}
-
-/* 圆点脉冲发光动画（包含描边） */
-@keyframes magnifier-pulse {
-  0%, 100% {
-    box-shadow:
-      /* 描边发光 */
-      inset 0 0 8px rgba(139, 195, 74, 1),
-      inset 0 0 16px rgba(139, 195, 74, 0.8),
-      0 0 4px rgba(255, 152, 0, 1),
-      0 0 8px rgba(255, 152, 0, 0.9),
-      /* 外发光 */
-      0 0 20px rgba(139, 195, 74, 0.8),
-      0 0 35px rgba(255, 152, 0, 0.7),
-      0 0 50px rgba(139, 195, 74, 0.5),
-      0 0 70px rgba(255, 152, 0, 0.4);
-  }
-  50% {
-    box-shadow:
-      /* 描边发光增强 */
-      inset 0 0 12px rgba(139, 195, 74, 1),
-      inset 0 0 20px rgba(139, 195, 74, 1),
-      0 0 6px rgba(255, 152, 0, 1),
-      0 0 12px rgba(255, 152, 0, 1),
-      /* 外发光增强 */
-      0 0 25px rgba(139, 195, 74, 1),
-      0 0 45px rgba(255, 152, 0, 0.9),
-      0 0 65px rgba(139, 195, 74, 0.7),
-      0 0 90px rgba(255, 152, 0, 0.6);
-  }
-}
-
-/* 边框旋转动画 */
-@keyframes ring-rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* 中心点脉冲动画 */
-@keyframes dot-pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.8;
-  }
+  /* 平滑过渡 */
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
 }
 
 /* 响应式：移动端恢复原生鼠标 */
@@ -243,17 +153,9 @@ onMounted(() => {
     cursor: auto !important;
   }
 
-  .magnifier,
+  .cursor-ring,
   .cursor-dot {
     display: none;
   }
-}
-
-/* 性能优化 */
-.magnifier,
-.magnifier-ring,
-.cursor-dot {
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
 }
 </style>

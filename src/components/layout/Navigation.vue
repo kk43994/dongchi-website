@@ -1,9 +1,10 @@
 <template>
   <nav
-    :class="['fixed top-0 left-0 w-full z-50 transition-all duration-500', scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent']"
+    :class="['fixed top-0 left-0 w-full z-[10001] transition-all duration-500', navBackground]"
+    style="overflow: visible;"
   >
-    <div class="container mx-auto px-6">
-      <div class="flex items-center justify-between h-24">
+    <div class="container mx-auto px-6" style="overflow: visible;">
+      <div class="flex items-center justify-between h-24" style="overflow: visible;">
         <!-- Logo区域 - 便当盒造型设计 -->
         <router-link to="/" class="flex items-center gap-3 group relative">
           <!-- 便当盒装饰背景 -->
@@ -19,10 +20,10 @@
           </div>
 
           <div class="flex flex-col relative z-10">
-            <h1 :class="['text-2xl font-bold transition-colors duration-300', scrolled ? 'text-[#8BC34A]' : 'text-white']" style="font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;">
+            <h1 :class="['text-2xl font-bold transition-colors duration-300', useDarkTheme ? 'text-[#8BC34A]' : 'text-white']" style="font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;">
               东池便当
             </h1>
-            <span :class="['text-xs font-medium transition-colors duration-300', scrolled ? 'text-[#FF9800]' : 'text-white/90']">
+            <span :class="['text-xs font-medium transition-colors duration-300', useDarkTheme ? 'text-[#FF9800]' : 'text-white/90']">
               台湾风味 · 温州情怀
             </span>
           </div>
@@ -33,15 +34,15 @@
           <div
             v-for="item in navItems"
             :key="item.name"
-            class="relative"
-            @mouseenter="item.hasDropdown && showDropdown(item.name)"
-            @mouseleave="hideDropdown"
+            class="relative flex items-center"
+            @mouseenter="item.hasDropdown && showDropdown(item.name, $event)"
+            @mouseleave="scheduleHideDropdown"
           >
             <router-link
               :to="item.path"
               :class="[
-                'relative text-sm font-semibold transition-all duration-300 whitespace-nowrap flex items-center gap-1',
-                scrolled ? 'text-gray-700 hover:text-[#8BC34A]' : 'text-white hover:text-[#FF9800]'
+                'group relative px-1 py-2 text-sm font-semibold transition-all duration-300 whitespace-nowrap flex items-center gap-1',
+                useDarkTheme ? 'text-gray-700 hover:text-[#8BC34A]' : 'text-white hover:text-[#FF9800]'
               ]"
               active-class="nav-active"
             >
@@ -64,47 +65,11 @@
               <!-- 底部装饰线 -->
               <span
                 :class="[
-                  'absolute -bottom-2 left-0 w-0 h-0.5 rounded-full transition-all duration-300',
-                  scrolled ? 'bg-gradient-to-r from-[#8BC34A] to-[#FF9800]' : 'bg-[#FF9800]'
+                  'nav-underline absolute -bottom-2 left-0 h-0.5 w-full origin-left scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100',
+                  useDarkTheme ? 'bg-gradient-to-r from-[#8BC34A] to-[#FF9800]' : 'bg-[#FF9800]'
                 ]"
-                style="width: 0;"
               ></span>
             </router-link>
-
-            <!-- 极简透明下拉菜单 -->
-            <transition
-              enter-active-class="transition-all duration-200 ease-out"
-              enter-from-class="opacity-0 translate-y-1"
-              enter-to-class="opacity-100 translate-y-0"
-              leave-active-class="transition-all duration-150 ease-in"
-              leave-from-class="opacity-100 translate-y-0"
-              leave-to-class="opacity-0 translate-y-1"
-            >
-              <div
-                v-if="item.hasDropdown && activeDropdown === item.name"
-                class="absolute left-0 top-full mt-2 min-w-[160px] py-2"
-              >
-                <router-link
-                  v-for="(link, index) in item.dropdown"
-                  :key="index"
-                  :to="link.path"
-                  :class="[
-                    'relative block px-3 py-2 text-sm font-semibold transition-all duration-300',
-                    scrolled ? 'text-gray-700 hover:text-[#8BC34A]' : 'text-white hover:text-[#FF9800]'
-                  ]"
-                >
-                  {{ link.name }}
-
-                  <!-- 底部下划线动画 -->
-                  <span
-                    :class="[
-                      'absolute bottom-1 left-2 w-0 h-0.5 rounded-full transition-all duration-300 hover:w-[calc(100%-1rem)]',
-                      scrolled ? 'bg-gradient-to-r from-[#8BC34A] to-[#FF9800]' : 'bg-[#FF9800]'
-                    ]"
-                  ></span>
-                </router-link>
-              </div>
-            </transition>
           </div>
         </div>
 
@@ -115,7 +80,7 @@
             href="tel:400-888-8888"
             :class="[
               'flex items-center gap-1.5 px-4 py-2.5 rounded-full transition-all duration-300 border-2 text-sm',
-              scrolled
+              useDarkTheme
                 ? 'border-[#8BC34A] text-[#8BC34A] hover:bg-[#8BC34A] hover:text-white'
                 : 'border-white/80 text-white hover:bg-white hover:text-[#8BC34A]'
             ]"
@@ -141,29 +106,29 @@
         <!-- 移动端便当盒菜单按钮 -->
         <button
           @click="mobileMenuOpen = !mobileMenuOpen"
-          :class="['lg:hidden p-2 rounded-xl transition-all duration-300 relative group', scrolled ? 'text-[#8BC34A] hover:bg-[#8BC34A]/10' : 'text-white hover:bg-white/10']"
+          :class="['lg:hidden p-2 rounded-xl transition-all duration-300 relative group', useDarkTheme ? 'text-[#8BC34A] hover:bg-[#8BC34A]/10' : 'text-white hover:bg-white/10']"
           aria-label="菜单"
         >
           <!-- 便当盒图标（未打开状态） -->
           <svg v-if="!mobileMenuOpen" class="w-8 h-8 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <!-- 便当盒盖子 -->
-            <rect x="4" y="5" width="16" height="4" rx="1" stroke-width="2" :class="scrolled ? 'stroke-[#8BC34A]' : 'stroke-white'"/>
+            <rect x="4" y="5" width="16" height="4" rx="1" stroke-width="2" :class="useDarkTheme ? 'stroke-[#8BC34A]' : 'stroke-white'"/>
             <!-- 便当盒主体 -->
-            <rect x="4" y="9" width="16" height="10" rx="1" stroke-width="2" :class="scrolled ? 'stroke-[#FF9800]' : 'stroke-white'"/>
+            <rect x="4" y="9" width="16" height="10" rx="1" stroke-width="2" :class="useDarkTheme ? 'stroke-[#FF9800]' : 'stroke-white'"/>
             <!-- 便当格子分隔线 -->
-            <line x1="12" y1="9" x2="12" y2="19" stroke-width="2" :class="scrolled ? 'stroke-[#8BC34A]' : 'stroke-white'" opacity="0.5"/>
-            <line x1="4" y1="14" x2="20" y2="14" stroke-width="2" :class="scrolled ? 'stroke-[#8BC34A]' : 'stroke-white'" opacity="0.5"/>
+            <line x1="12" y1="9" x2="12" y2="19" stroke-width="2" :class="useDarkTheme ? 'stroke-[#8BC34A]' : 'stroke-white'" opacity="0.5"/>
+            <line x1="4" y1="14" x2="20" y2="14" stroke-width="2" :class="useDarkTheme ? 'stroke-[#8BC34A]' : 'stroke-white'" opacity="0.5"/>
           </svg>
 
           <!-- 关闭图标（打开状态） - 带便当色彩 -->
           <svg v-else class="w-8 h-8 transition-transform duration-300 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="9" stroke-width="2" :class="scrolled ? 'stroke-[#8BC34A]' : 'stroke-white'" opacity="0.2"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" :class="scrolled ? 'stroke-[#FF9800]' : 'stroke-white'"></path>
+            <circle cx="12" cy="12" r="9" stroke-width="2" :class="useDarkTheme ? 'stroke-[#8BC34A]' : 'stroke-white'" opacity="0.2"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" :class="useDarkTheme ? 'stroke-[#FF9800]' : 'stroke-white'"></path>
           </svg>
 
           <!-- 悬停时的便当盒"蒸气"效果 -->
           <div class="absolute -top-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div :class="['w-1 h-1 rounded-full animate-ping', scrolled ? 'bg-[#8BC34A]' : 'bg-white']"></div>
+            <div :class="['w-1 h-1 rounded-full animate-ping', useDarkTheme ? 'bg-[#8BC34A]' : 'bg-white']"></div>
           </div>
         </button>
       </div>
@@ -223,15 +188,79 @@
         </div>
       </div>
     </transition>
+
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition-all duration-200 ease-out"
+        enter-from-class="opacity-0 translate-y-1"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition-all duration-150 ease-in"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 translate-y-1"
+      >
+        <div
+          v-if="activeDropdownItem"
+          class="fixed z-[10002] min-w-[220px] -translate-x-1/2 pt-3"
+          :style="dropdownStyle"
+          @mouseenter="cancelHideDropdown"
+          @mouseleave="hideDropdown"
+        >
+          <div class="overflow-hidden rounded-2xl border border-white/60 bg-white/95 shadow-[0_18px_50px_rgba(15,23,42,0.18)] backdrop-blur-xl">
+            <router-link
+              v-for="(link, index) in activeDropdownItem.dropdown"
+              :key="index"
+              :to="link.path"
+              class="group relative block px-5 py-3 text-sm font-semibold text-gray-700 transition-all duration-300 hover:bg-gradient-to-r hover:from-[#8BC34A]/10 hover:to-[#FF9800]/10 hover:text-[#8BC34A]"
+              @click="hideDropdown"
+            >
+              {{ link.name }}
+
+              <span class="absolute inset-x-5 bottom-2 h-0.5 origin-left scale-x-0 rounded-full bg-gradient-to-r from-[#8BC34A] to-[#FF9800] transition-transform duration-300 group-hover:scale-x-100"></span>
+            </router-link>
+          </div>
+        </div>
+      </transition>
+    </Teleport>
   </nav>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const scrolled = ref(false)
 const mobileMenuOpen = ref(false)
 const activeDropdown = ref(null)
+const dropdownStyle = ref({
+  top: '96px',
+  left: '0px'
+})
+let hideDropdownTimer = null
+
+// 定义浅色Hero区域的页面（需要在顶部显示深色导航）
+const lightHeroPages = ['/about', '/quality', '/stores', '/news', '/contact']
+
+// 判断当前页面是否为浅色Hero
+const isLightHero = computed(() => {
+  return lightHeroPages.includes(route.path)
+})
+
+// 导航栏是否应该使用深色主题（深色文字）
+// 浅色Hero页面：始终使用深色文字
+// 深色Hero页面：未滚动时白色文字，滚动后深色文字
+const useDarkTheme = computed(() => {
+  if (isLightHero.value) {
+    return true // 浅色Hero页面始终使用深色文字
+  }
+  return scrolled.value // 深色Hero页面滚动后才用深色文字
+})
+
+// 导航栏背景样式
+// 所有页面：未滚动时透明，滚动后白色背景
+const navBackground = computed(() => {
+  return scrolled.value ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+})
 
 // 导航菜单项 - 带简单下拉
 const navItems = [
@@ -256,11 +285,10 @@ const navItems = [
     path: '/products',
     hasDropdown: true,
     dropdown: [
-      { name: '肉类便当', path: '/products?category=meat' },
-      { name: '鸡肉便当', path: '/products?category=chicken' },
-      { name: '鱼肉便当', path: '/products?category=fish' },
-      { name: '素食便当', path: '/products?category=vegetarian' },
-      { name: '组合套餐', path: '/products?category=combo' }
+      { name: '全部产品', path: '/products' },
+      { name: '猪、牛肉类', path: '/products?category=meat' },
+      { name: '鸡肉类', path: '/products?category=chicken' },
+      { name: '海鲜类', path: '/products?category=fish' }
     ]
   },
   {
@@ -274,10 +302,10 @@ const navItems = [
     hasDropdown: true,
     dropdown: [
       { name: '加盟优势', path: '/franchise#advantages' },
-      { name: '投资计算器', path: '/franchise#calculator' },
+      { name: '投资计算器', path: '/franchise#roi-calculator' },
       { name: '加盟流程', path: '/franchise#process' },
       { name: '成功案例', path: '/franchise#cases' },
-      { name: '在线申请', path: '/franchise#apply' }
+      { name: '在线申请', path: '/franchise#application-form' }
     ]
   },
   {
@@ -297,13 +325,45 @@ const navItems = [
   }
 ]
 
+const activeDropdownItem = computed(() => {
+  return navItems.find((item) => item.name === activeDropdown.value) || null
+})
+
 // 显示下拉菜单
-const showDropdown = (itemName) => {
+const showDropdown = (itemName, event) => {
+  cancelHideDropdown()
   activeDropdown.value = itemName
+
+  const trigger = event?.currentTarget
+
+  if (!trigger) {
+    return
+  }
+
+  const rect = trigger.getBoundingClientRect()
+  dropdownStyle.value = {
+    top: `${rect.bottom}px`,
+    left: `${rect.left + rect.width / 2}px`
+  }
+}
+
+const scheduleHideDropdown = () => {
+  cancelHideDropdown()
+  hideDropdownTimer = window.setTimeout(() => {
+    activeDropdown.value = null
+  }, 120)
+}
+
+const cancelHideDropdown = () => {
+  if (hideDropdownTimer) {
+    window.clearTimeout(hideDropdownTimer)
+    hideDropdownTimer = null
+  }
 }
 
 // 隐藏下拉菜单
 const hideDropdown = () => {
+  cancelHideDropdown()
   activeDropdown.value = null
 }
 
@@ -314,25 +374,22 @@ const handleScroll = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  window.addEventListener('resize', hideDropdown)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', hideDropdown)
 })
 </script>
 
 <style scoped>
-/* 导航链接悬停效果 */
-.hidden.lg\:flex a:hover span {
-  width: 100% !important;
-}
-
 /* Active状态样式 */
 :deep(.nav-active) {
   font-weight: 700;
 }
 
-:deep(.nav-active) span {
-  width: 100% !important;
+:deep(.nav-active .nav-underline) {
+  transform: scaleX(1);
 }
 </style>

@@ -53,12 +53,12 @@
 
         <!-- CTA按钮 -->
         <div ref="ctaRef" class="opacity-0 flex gap-6 justify-center mt-12">
-          <button class="bg-white text-[#8BC34A] px-12 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+          <router-link to="/products" class="bg-white text-[#8BC34A] px-12 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
             探索美食
-          </button>
-          <button class="bg-transparent border-2 border-white text-white px-12 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-[#8BC34A] transition-all duration-300">
+          </router-link>
+          <router-link to="/franchise" class="bg-transparent border-2 border-white text-white px-12 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-[#8BC34A] transition-all duration-300">
             加盟合作
-          </button>
+          </router-link>
         </div>
       </div>
 
@@ -97,6 +97,9 @@ const displayedSlogan = ref('')
 
 let particles = []
 let animationId = null
+let particleIntervalId = null
+let resizeHandler = null
+let clearTypeWriter = null
 
 // 粒子类
 class Particle {
@@ -184,7 +187,7 @@ const initParticles = () => {
   }, 500)
 
   // 每5秒创建随机位置的爆炸 - 优化：降低频率减少CPU负担
-  setInterval(() => {
+  particleIntervalId = window.setInterval(() => {
     const x = Math.random() * canvas.width
     const y = Math.random() * canvas.height
     createExplosion(x, y, canvas)
@@ -195,10 +198,12 @@ const initParticles = () => {
   }, 5000)  // 从3秒改为5秒
 
   // 窗口大小改变时重新设置canvas
-  window.addEventListener('resize', () => {
+  resizeHandler = () => {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
-  })
+  }
+
+  window.addEventListener('resize', resizeHandler)
 }
 
 const typeWriter = () => {
@@ -245,7 +250,9 @@ onMounted(() => {
   tl.to(sloganRef.value, {
     opacity: 1,
     duration: 0.5,
-    onComplete: typeWriter
+    onComplete: () => {
+      clearTypeWriter = typeWriter()
+    }
   }, '-=1')
 
   // 副标题从下方弹入
@@ -273,6 +280,18 @@ onMounted(() => {
 onUnmounted(() => {
   if (animationId) {
     cancelAnimationFrame(animationId)
+  }
+
+  if (particleIntervalId) {
+    clearInterval(particleIntervalId)
+  }
+
+  if (resizeHandler) {
+    window.removeEventListener('resize', resizeHandler)
+  }
+
+  if (typeof clearTypeWriter === 'function') {
+    clearTypeWriter()
   }
 })
 </script>

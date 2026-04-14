@@ -3,6 +3,9 @@
     <!-- 全局导航栏 -->
     <Navigation />
 
+    <!-- 鼠标跟随光标 -->
+    <MouseFollower />
+
     <!-- 第一屏：开场全屏Hero -->
     <HeroSection />
 
@@ -33,6 +36,7 @@ import 'aos/dist/aos.css'
 
 import Navigation from '../components/layout/Navigation.vue'
 import Footer from '../components/layout/Footer.vue'
+import MouseFollower from '../components/shared/MouseFollower.vue'
 import HeroSection from '../components/home/HeroSection.vue'
 import StatsSection from '../components/home/StatsSection.vue'
 import ProductsSection from '../components/home/ProductsSection.vue'

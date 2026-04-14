@@ -13,7 +13,7 @@
     <BackToTop />
 
     <!-- Hero Section - 品牌愿景 -->
-    <section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-green-50 via-white to-orange-50">
+    <section id="founder" class="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-green-50 via-white to-orange-50">
       <!-- 背景装饰 -->
       <div class="absolute inset-0 opacity-30">
         <div class="absolute top-20 left-10 w-72 h-72 bg-green-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
@@ -326,7 +326,7 @@
     </section>
 
     <!-- 企业文化价值观 -->
-    <section class="relative py-20 bg-gradient-to-b from-white to-green-50">
+    <section id="culture" class="relative py-20 bg-gradient-to-b from-white to-green-50">
       <div class="container mx-auto px-6">
         <div class="text-center mb-16">
           <div class="inline-block px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-medium mb-4" data-aos="fade-up">
@@ -420,7 +420,7 @@
               poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2322c55e;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23f97316;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23eab308;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1920' height='1080' fill='url(%23grad)'/%3E%3Ctext x='960' y='500' font-family='Arial' font-size='72' fill='white' text-anchor='middle' font-weight='bold'%3E东池便当%3C/text%3E%3Ctext x='960' y='600' font-family='Arial' font-size='36' fill='white' text-anchor='middle' opacity='0.9'%3E品牌宣传视频%3C/text%3E%3C/svg%3E"
               preload="metadata"
             >
-              <source src="/videos/brand-story.mp4" type="video/mp4">
+              <source src="/hero-video.mp4" type="video/mp4">
               您的浏览器不支持视频播放，请升级浏览器。
             </video>
 
@@ -475,7 +475,7 @@
     </section>
 
     <!-- 荣誉墙 -->
-    <section class="relative py-20 bg-gradient-to-br from-orange-50 to-white">
+    <section id="honors" class="relative py-20 bg-gradient-to-br from-orange-50 to-white">
       <div class="container mx-auto px-6">
         <div class="text-center mb-16">
           <div class="inline-block px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium mb-4" data-aos="fade-up">

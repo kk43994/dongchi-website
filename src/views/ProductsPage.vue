@@ -80,21 +80,81 @@
           </div>
 
           <!-- 分类筛选 -->
-          <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto scrollbar-hide">
+          <div class="flex gap-3 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto scrollbar-hide">
             <button
               v-for="category in categories"
               :key="category.id"
-              @click="activeCategory = category.id"
+              @click="setActiveCategory(category.id)"
               :class="[
-                'px-6 py-3 rounded-xl font-medium whitespace-nowrap transition-all duration-300 flex items-center gap-2',
+                'group relative px-5 py-3.5 rounded-2xl font-semibold whitespace-nowrap transition-all duration-500 flex items-center gap-3 border-2 transform hover:scale-105 hover:-translate-y-0.5',
                 activeCategory === category.id
-                  ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white shadow-lg scale-105'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-gradient-to-br from-orange-500 via-orange-400 to-yellow-500 text-white border-orange-400 shadow-xl shadow-orange-500/30 scale-105'
+                  : 'bg-white text-gray-700 border-gray-200 hover:border-orange-300 hover:shadow-lg hover:bg-orange-50/50'
               ]"
             >
-              <span>{{ category.icon }}</span>
-              <span>{{ category.name }}</span>
-              <span class="text-xs opacity-75">({{ category.count }})</span>
+              <!-- 图标容器 -->
+              <div :class="[
+                'relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-500 transform group-hover:rotate-12 group-hover:scale-110',
+                activeCategory === category.id
+                  ? 'bg-white/20 backdrop-blur-sm'
+                  : 'bg-gradient-to-br from-orange-100 to-yellow-100'
+              ]">
+                <!-- 全部分类图标 - 便当盒 -->
+                <svg v-if="category.id === 'all'" :class="[
+                  'w-6 h-6 transition-colors duration-300',
+                  activeCategory === category.id ? 'text-white' : 'text-orange-600'
+                ]" fill="currentColor" viewBox="0 0 64 64">
+                  <path d="M54 14h-4V8c0-2.2-1.8-4-4-4H18c-2.2 0-4 1.8-4 4v6h-4c-2.2 0-4 1.8-4 4v38c0 2.2 1.8 4 4 4h44c2.2 0 4-1.8 4-4V18c0-2.2-1.8-4-4-4zM18 8h28v6H18V8zm36 48H10V18h4v4h36v-4h4v38z"/>
+                  <rect x="20" y="28" width="10" height="8" rx="2"/>
+                  <rect x="34" y="28" width="10" height="8" rx="2"/>
+                  <rect x="20" y="40" width="10" height="8" rx="2"/>
+                  <rect x="34" y="40" width="10" height="8" rx="2"/>
+                </svg>
+
+                <!-- 猪、牛肉类图标 - 肉块 -->
+                <svg v-else-if="category.id === 'meat'" :class="[
+                  'w-6 h-6 transition-colors duration-300',
+                  activeCategory === category.id ? 'text-white' : 'text-orange-600'
+                ]" fill="currentColor" viewBox="0 0 64 64">
+                  <path d="M48 12c-3.3 0-6 2.7-6 6 0 1.1.3 2.1.8 3-1.2-.5-2.5-.8-3.8-.8-5.5 0-10 4.5-10 10 0 .8.1 1.6.3 2.3-1.4-.8-3-1.3-4.8-1.3-5.2 0-9.5 4.3-9.5 9.5s4.3 9.5 9.5 9.5c3.8 0 7.1-2.2 8.6-5.4 1.3 2.3 3.7 3.9 6.5 3.9 3.3 0 6.1-2.1 7.1-5.1 1.5 1.3 3.5 2.1 5.6 2.1 4.4 0 8-3.6 8-8 0-2.6-1.2-4.9-3.1-6.4.7-1.2 1.1-2.5 1.1-3.9 0-4.4-3.6-8-8-8-1.5 0-2.9.4-4.1 1.1.1-.7.2-1.4.2-2.1 0-3.3-2.7-6-6-6zm0 4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm-9 8c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6 2.7-6 6-6zm-14.5 11c3 0 5.5 2.5 5.5 5.5s-2.5 5.5-5.5 5.5-5.5-2.5-5.5-5.5 2.5-5.5 5.5-5.5zm23 0c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4 1.8-4 4-4z"/>
+                </svg>
+
+                <!-- 鸡肉类图标 - 鸡腿 -->
+                <svg v-else-if="category.id === 'chicken'" :class="[
+                  'w-6 h-6 transition-colors duration-300',
+                  activeCategory === category.id ? 'text-white' : 'text-orange-600'
+                ]" fill="currentColor" viewBox="0 0 64 64">
+                  <path d="M42 8c-3.9 0-7.3 2.3-8.9 5.6C31.5 11.5 28.8 10 25.7 10c-5.4 0-9.7 4.3-9.7 9.7 0 1.3.3 2.5.7 3.6-2.7 1.3-4.7 4-4.7 7.2 0 4.4 3.6 8 8 8 1.8 0 3.5-.6 4.9-1.6.8 5.5 5.5 9.7 11.1 9.7 3.8 0 7.2-1.9 9.2-4.8 1.4.8 3 1.3 4.8 1.3 5.2 0 9.5-4.3 9.5-9.5 0-3.9-2.4-7.3-5.8-8.7.3-1 .5-2.1.5-3.2C54.2 14.8 48.9 8 42 8zm0 4c4.6 0 8.2 4.3 8.2 9.7 0 1.5-.3 2.9-.9 4.2l-.8 1.7 1.6.9c2.5 1.4 4.1 4 4.1 6.9 0 3-2.5 5.5-5.5 5.5-1.4 0-2.7-.5-3.7-1.4l-1.6-1.4-1.1 1.8c-1.5 2.5-4.2 4.1-7.2 4.1-4.5 0-8.2-3.5-8.5-7.9l-.1-2-1.9.8c-1 .4-2 .6-3.1.6-2.2 0-4-1.8-4-4 0-1.7 1.1-3.2 2.7-3.8l2.1-.8-.9-2c-.5-1.2-.8-2.4-.8-3.7 0-3.2 2.6-5.7 5.7-5.7 2.2 0 4.2 1.3 5.2 3.3l1 2.2 1.5-1.9C34.8 14.5 38.2 12 42 12z"/>
+                  <ellipse cx="28" cy="25" rx="2.5" ry="3"/>
+                  <ellipse cx="38" cy="28" rx="2" ry="2.5"/>
+                </svg>
+
+                <!-- 海鲜类图标 - 鱼 -->
+                <svg v-else-if="category.id === 'fish'" :class="[
+                  'w-6 h-6 transition-colors duration-300',
+                  activeCategory === category.id ? 'text-white' : 'text-orange-600'
+                ]" fill="currentColor" viewBox="0 0 64 64">
+                  <path d="M52 28c-2.8-3.7-7.5-6.5-13-7.5 1.5-2.8 2.5-6.2 2.5-10 0-1.1-.9-2-2-2s-2 .9-2 2c0 3.5-.9 6.5-2.2 8.8-2.6-.4-5.4-.6-8.3-.6s-5.7.2-8.3.6C17.4 17 16.5 14 16.5 10.5c0-1.1-.9-2-2-2s-2 .9-2 2c0 3.8 1 7.2 2.5 10-5.5 1-10.2 3.8-13 7.5-1.2 1.6-.6 3.8 1.2 4.7 1.8.9 4 .3 5.2-1.3 1.5-2 4-3.5 6.9-4.3-.3 1.8-.5 3.7-.5 5.7 0 11 7.2 20 16 20s16-9 16-20c0-2-.2-3.9-.5-5.7 2.9.8 5.4 2.3 6.9 4.3 1.2 1.6 3.4 2.2 5.2 1.3 1.8-.9 2.4-3.1 1.2-4.7zM27 48c-6.6 0-12-7.2-12-16s5.4-16 12-16 12 7.2 12 16-5.4 16-12 16z"/>
+                  <circle cx="33" cy="26" r="2.5"/>
+                  <path d="M20 30c.6.6 1.5 1 2.5 1s1.9-.4 2.5-1M30 38c.6.6 1.5 1 2.5 1s1.9-.4 2.5-1" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </svg>
+
+                <!-- 活跃状态光晕 -->
+                <div v-if="activeCategory === category.id" class="absolute inset-0 rounded-xl bg-white/20 animate-pulse"></div>
+              </div>
+
+              <!-- 分类名称 -->
+              <div class="flex flex-col items-start">
+                <span class="text-sm leading-tight">{{ category.name }}</span>
+                <span :class="[
+                  'text-xs transition-colors duration-300 mt-0.5',
+                  activeCategory === category.id ? 'text-white/80' : 'text-gray-500'
+                ]">{{ category.count }} 款</span>
+              </div>
+
+              <!-- 激活指示器 -->
+              <div v-if="activeCategory === category.id" class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white shadow-lg animate-ping"></div>
+              <div v-if="activeCategory === category.id" class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white shadow-lg"></div>
             </button>
           </div>
         </div>
@@ -498,7 +558,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Autoplay, Pagination, Navigation as SwiperNavigation } from 'swiper/modules'
 import AOS from 'aos'
@@ -515,15 +576,15 @@ import 'swiper/css/navigation'
 import 'aos/dist/aos.css'
 
 const swiperModules = [Autoplay, Pagination, SwiperNavigation]
+const route = useRoute()
+const router = useRouter()
 
-// 分类
+// 分类（基于真实东池便当产品）
 const categories = ref([
-  { id: 'all', name: '全部', icon: '🍱', count: 42 },
-  { id: 'meat', name: '肉类便当', icon: '🥩', count: 15 },
-  { id: 'chicken', name: '鸡肉系列', icon: '🍗', count: 8 },
-  { id: 'fish', name: '鱼肉系列', icon: '🐟', count: 6 },
-  { id: 'veg', name: '素食便当', icon: '🥗', count: 7 },
-  { id: 'combo', name: '组合套餐', icon: '🍛', count: 6 }
+  { id: 'all', name: '全部', icon: '🍱', count: 18 },
+  { id: 'meat', name: '猪、牛肉类', icon: '🥩', count: 8 },
+  { id: 'chicken', name: '鸡肉类', icon: '🍗', count: 5 },
+  { id: 'fish', name: '海鲜类', icon: '🐟', count: 5 }
 ])
 
 const activeCategory = ref('all')
@@ -533,60 +594,33 @@ const currentPage = ref(1)
 const itemsPerPage = 12
 const selectedProduct = ref(null)
 const showCartToast = ref(false)
+const validCategoryIds = new Set(['all', 'meat', 'chicken', 'fish'])
 
-// 全部产品数据（模拟）
+// 全部产品数据（真实东池便当产品）
 const allProducts = ref([
-  // 热销产品
-  { id: 1, name: '经典卤肉便当', category: 'meat', description: '台湾秘制卤肉，配以精选时蔬，米饭粒粒分明，浓香四溢', price: 28, originalPrice: 35, rating: 5, reviews: 2834, sales: 50000, image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80', tags: ['招牌推荐', '台湾风味', '营养均衡'], isHot: true, isNew: false, discount: null, ingredients: '卤肉、米饭、青菜、卤蛋、笋干' },
-  { id: 2, name: '黑椒牛柳便当', category: 'meat', description: '精选澳洲牛柳，搭配黑椒酱汁，肉质鲜嫩多汁', price: 35, originalPrice: 42, rating: 5, reviews: 1923, sales: 38000, image: 'https://images.unsplash.com/photo-1625937286074-9ca519d5d9df?w=600&q=80', tags: ['人气爆款', '高蛋白', '商务优选'], isHot: true, isNew: false, discount: null, ingredients: '澳洲牛柳、黑椒汁、西兰花、胡萝卜、米饭' },
-  { id: 3, name: '照烧鸡腿便当', category: 'chicken', description: '日式照烧工艺，鸡腿肉嫩滑入味，酱汁香甜可口', price: 32, originalPrice: null, rating: 5, reviews: 1567, sales: 32000, image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=600&q=80', tags: ['日式风味', '低脂健康', '办公族最爱'], isHot: true, isNew: false, discount: null, ingredients: '鸡腿、照烧汁、时蔬、米饭' },
-  { id: 4, name: '酸菜鱼片便当', category: 'fish', description: '川味酸菜配鲜嫩鱼片，酸辣开胃，回味无穷', price: 30, originalPrice: null, rating: 4, reviews: 1234, sales: 28000, image: 'https://images.unsplash.com/photo-1603073891934-64ead27c9d86?w=600&q=80', tags: ['川味特色', '酸辣鲜香', '季节限定'], isHot: true, isNew: true, discount: null, ingredients: '巴沙鱼、酸菜、米饭、豆芽' },
-  { id: 5, name: '宫保鸡丁便当', category: 'chicken', description: '经典川菜风味，鸡丁酥脆花生香，配菜丰富营养', price: 26, originalPrice: null, rating: 5, reviews: 987, sales: 25000, image: 'https://images.unsplash.com/photo-1588191317928-e5ed69eaf3ec?w=600&q=80', tags: ['经典川菜', '香辣可口', '超值实惠'], isHot: true, isNew: false, discount: null, ingredients: '鸡肉、花生、干辣椒、葱姜蒜、米饭' },
-  { id: 6, name: '红烧排骨便当', category: 'meat', description: '排骨软烂入味，红烧汁浓郁，下饭必备', price: 38, originalPrice: 45, rating: 5, reviews: 856, sales: 22000, image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&q=80', tags: ['家常美味', '肉质软烂', '营养丰富'], isHot: true, isNew: false, discount: 8.5, ingredients: '排骨、红烧汁、土豆、胡萝卜、米饭' },
-  { id: 7, name: '梅菜扣肉便当', category: 'meat', description: '传统客家风味，五花肉肥而不腻，梅菜香浓', price: 34, originalPrice: null, rating: 5, reviews: 734, sales: 20000, image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=600&q=80', tags: ['客家特色', '经典名菜', '回味无穷'], isHot: true, isNew: false, discount: null, ingredients: '五花肉、梅干菜、米饭' },
-  { id: 8, name: '糖醋里脊便当', category: 'meat', description: '酸甜可口，外酥里嫩，老少皆宜的经典口味', price: 29, originalPrice: null, rating: 5, reviews: 623, sales: 18000, image: 'https://images.unsplash.com/photo-1603073891934-64ead27c9d86?w=600&q=80', tags: ['酸甜口味', '外酥里嫩', '儿童喜爱'], isHot: true, isNew: false, discount: null, ingredients: '里脊肉、糖醋汁、青红椒、米饭' },
-  { id: 9, name: '椒盐鸡翅便当', category: 'chicken', description: '鸡翅炸至金黄，椒盐香味浓郁，外脆内嫩', price: 31, originalPrice: null, rating: 5, reviews: 589, sales: 17000, image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&q=80', tags: ['香酥可口', '高蛋白', '美味下饭'], isHot: true, isNew: false, discount: null, ingredients: '鸡翅、椒盐、时蔬、米饭' },
-  { id: 10, name: '香煎鱼排便当', category: 'fish', description: '深海鱼排，香煎至金黄，搭配柠檬汁，清新不腻', price: 36, originalPrice: null, rating: 4, reviews: 478, sales: 15000, image: 'https://images.unsplash.com/photo-1563245372-70a1883c9e45?w=600&q=80', tags: ['深海鱼', '低脂健康', '清淡养生'], isHot: true, isNew: true, discount: null, ingredients: '深海鱼排、柠檬汁、时蔬、米饭' },
+  // 猪、牛肉类 (8个产品)
+  { id: 1, name: '招牌饭', category: 'meat', description: '东池招牌必点，精选食材，配以秘制酱汁，米饭粒粒分明，营养均衡', price: 28, originalPrice: 35, rating: 5, reviews: 2834, sales: 50000, image: '/images/products/signature-rice.png', tags: ['招牌推荐', '人气爆款', '营养均衡'], isHot: true, isNew: false, discount: null, ingredients: '优质肉类、米饭、时蔬、卤蛋、秘制酱汁' },
+  { id: 2, name: '香肠饭', category: 'meat', description: '香肠香味浓郁，搭配新鲜时蔬，配菜丰富营养，简单美味', price: 26, originalPrice: 32, rating: 5, reviews: 1923, sales: 38000, image: '/images/products/sausage-rice.png', tags: ['经典美味', '香肠诱人', '营养搭配'], isHot: true, isNew: false, discount: null, ingredients: '香肠、米饭、时蔬、卤蛋' },
+  { id: 3, name: '台湾肉燥饭', category: 'meat', description: '正宗台湾风味，肉燥浓香四溢，米饭Q弹可口，经典台式美味', price: 28, originalPrice: null, rating: 5, reviews: 1567, sales: 32000, image: '/images/products/taiwan-braised-pork-rice.png', tags: ['台湾风味', '经典美食', '浓香肉燥'], isHot: true, isNew: false, discount: null, ingredients: '肉燥、米饭、时蔬、卤蛋' },
+  { id: 4, name: '排骨饭', category: 'meat', description: '排骨肉质鲜嫩，搭配秘制酱汁，香气扑鼻，营养丰富', price: 32, originalPrice: null, rating: 5, reviews: 1234, sales: 28000, image: '/images/products/pork-chop-rice.png', tags: ['排骨鲜嫩', '酱汁浓郁', '营养美味'], isHot: true, isNew: false, discount: null, ingredients: '排骨、米饭、时蔬、秘制酱汁' },
+  { id: 5, name: '梅干菜扣肉饭', category: 'meat', description: '传统客家风味，五花肉肥而不腻，梅干菜香浓开胃，经典名菜', price: 34, originalPrice: null, rating: 5, reviews: 987, sales: 25000, image: '/images/products/preserved-vegetable-pork-rice.png', tags: ['客家特色', '经典名菜', '肥而不腻'], isHot: true, isNew: false, discount: null, ingredients: '五花肉、梅干菜、米饭' },
+  { id: 6, name: '卤肉饭', category: 'meat', description: '卤肉香浓入味，米饭粒粒分明，台湾经典美食，回味无穷', price: 28, originalPrice: 35, rating: 5, reviews: 856, sales: 22000, image: '/images/products/braised-pork-rice.png', tags: ['台湾经典', '卤肉香浓', '下饭神器'], isHot: true, isNew: false, discount: 8.5, ingredients: '卤肉、米饭、时蔬、卤蛋' },
+  { id: 7, name: '红烧排骨饭', category: 'meat', description: '排骨软烂入味，红烧汁浓郁香甜，营养丰富，家常美味', price: 36, originalPrice: null, rating: 5, reviews: 734, sales: 20000, image: '/images/products/red-braised-pork-rib-rice.png', tags: ['红烧美味', '肉质软烂', '营养丰富'], isHot: true, isNew: false, discount: null, ingredients: '排骨、红烧汁、时蔬、米饭' },
+  { id: 8, name: '红烧牛腩饭', category: 'meat', description: '牛腩软烂入味，汤汁浓郁醇香，营养滋补，经典家常菜', price: 38, originalPrice: null, rating: 5, reviews: 623, sales: 18000, image: '/images/products/red-braised-beef-brisket-rice.png', tags: ['牛腩软烂', '汤汁浓郁', '滋补养生'], isHot: true, isNew: false, discount: null, ingredients: '牛腩、红烧汁、土豆、胡萝卜、米饭' },
 
-  // 其他产品
-  { id: 11, name: '台式三杯鸡便当', category: 'chicken', description: '台湾经典名菜，九层塔香味浓郁', price: 33, originalPrice: null, rating: 5, reviews: 423, sales: 12000, image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&q=80', tags: ['台湾特色', '香气扑鼻'], isHot: false, isNew: false, discount: null },
-  { id: 12, name: '麻辣香锅便当', category: 'combo', description: '多种食材混搭，麻辣鲜香，层次丰富', price: 37, originalPrice: 42, rating: 5, reviews: 398, sales: 11000, image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80', tags: ['麻辣口味', '食材丰富'], isHot: false, isNew: true, discount: 8.8 },
-  { id: 13, name: '红烧牛腩便当', category: 'meat', description: '牛腩软烂入味，汤汁浓郁，营养滋补', price: 40, originalPrice: null, rating: 5, reviews: 367, sales: 10000, image: 'https://images.unsplash.com/photo-1625937286074-9ca519d5d9df?w=600&q=80', tags: ['滋补养生', '营养丰富'], isHot: false, isNew: false, discount: null },
-  { id: 14, name: '咖喱鸡肉便当', category: 'chicken', description: '印度风味咖喱，鸡肉嫩滑，香料丰富', price: 30, originalPrice: null, rating: 4, reviews: 334, sales: 9500, image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=600&q=80', tags: ['异域风情', '香料浓郁'], isHot: false, isNew: false, discount: null },
-  { id: 15, name: '蒜香排骨便当', category: 'meat', description: '蒜香四溢，排骨酥软，蒜蓉控最爱', price: 36, originalPrice: null, rating: 5, reviews: 298, sales: 8800, image: 'https://images.unsplash.com/photo-1588191317928-e5ed69eaf3ec?w=600&q=80', tags: ['蒜香浓郁', '肉质软烂'], isHot: false, isNew: false, discount: null },
-  { id: 16, name: '素食什锦便当', category: 'veg', description: '多种时令蔬菜，搭配豆制品，清淡健康', price: 24, originalPrice: null, rating: 4, reviews: 276, sales: 7600, image: 'https://images.unsplash.com/photo-1603073891934-64ead27c9d86?w=600&q=80', tags: ['素食健康', '低卡低脂'], isHot: false, isNew: true, discount: null },
-  { id: 17, name: '红烧茄子便当', category: 'veg', description: '茄子软糯入味，下饭神器，素食首选', price: 22, originalPrice: null, rating: 4, reviews: 254, sales: 7200, image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80', tags: ['素食美味', '家常口味'], isHot: false, isNew: false, discount: null },
-  { id: 18, name: '香菇滑鸡便当', category: 'chicken', description: '鸡肉嫩滑，香菇鲜香，广式风味', price: 31, originalPrice: null, rating: 5, reviews: 232, sales: 6800, image: 'https://images.unsplash.com/photo-1625937286074-9ca519d5d9df?w=600&q=80', tags: ['广式风味', '香菇鲜香'], isHot: false, isNew: false, discount: null },
-  { id: 19, name: '剁椒鱼头便当', category: 'fish', description: '湘菜经典，鱼肉鲜嫩，剁椒酸辣', price: 42, originalPrice: 50, rating: 5, reviews: 198, sales: 6200, image: 'https://images.unsplash.com/photo-1563245372-70a1883c9e45?w=600&q=80', tags: ['湘菜特色', '酸辣开胃'], isHot: false, isNew: false, discount: 8.4 },
-  { id: 20, name: '铁板牛肉便当', category: 'meat', description: '铁板烹饪，牛肉嫩滑，铁板香味', price: 39, originalPrice: null, rating: 5, reviews: 189, sales: 5900, image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80', tags: ['铁板风味', '肉质鲜嫩'], isHot: false, isNew: true, discount: null },
+  // 鸡肉类 (5个产品)
+  { id: 9, name: '香酥鸡翅饭', category: 'chicken', description: '鸡翅炸至金黄酥脆，外皮香脆内肉鲜嫩，美味可口', price: 30, originalPrice: null, rating: 5, reviews: 589, sales: 17000, image: '/images/products/crispy-chicken-wings-rice.png', tags: ['香酥可口', '外脆内嫩', '高蛋白'], isHot: true, isNew: false, discount: null, ingredients: '鸡翅、米饭、时蔬' },
+  { id: 10, name: '酥脆鸡排饭', category: 'chicken', description: '大块鸡排炸至金黄，外酥里嫩，搭配秘制酱汁，美味升级', price: 32, originalPrice: null, rating: 5, reviews: 478, sales: 15000, image: '/images/products/crispy-chicken-cutlet-rice.png', tags: ['大块鸡排', '酥脆美味', '秘制酱汁'], isHot: true, isNew: false, discount: null, ingredients: '鸡排、米饭、时蔬、酱汁' },
+  { id: 11, name: '麻椒鸡腿饭', category: 'chicken', description: '麻椒香味浓郁，鸡腿肉嫩多汁，麻辣鲜香，川味特色', price: 34, originalPrice: null, rating: 5, reviews: 423, sales: 12000, image: '/images/products/mala-chicken-leg-rice.png', tags: ['麻辣鲜香', '鸡腿嫩滑', '川味特色'], isHot: false, isNew: true, discount: null, ingredients: '鸡腿、麻椒、米饭、时蔬' },
+  { id: 12, name: '麻椒鸡翅饭', category: 'chicken', description: '鸡翅配麻椒调味，香辣过瘾，外脆内嫩，风味独特', price: 31, originalPrice: null, rating: 5, reviews: 398, sales: 11000, image: '/images/products/mala-chicken-wings-rice.png', tags: ['麻辣风味', '香辣过瘾', '外脆内嫩'], isHot: false, isNew: false, discount: null, ingredients: '鸡翅、麻椒、米饭、时蔬' },
+  { id: 13, name: '脆皮鸡腿饭', category: 'chicken', description: '鸡腿皮脆肉嫩，香气四溢，肉质鲜美，营养丰富', price: 33, originalPrice: null, rating: 5, reviews: 367, sales: 10000, image: '/images/products/crispy-chicken-leg-rice.png', tags: ['皮脆肉嫩', '香气四溢', '营养美味'], isHot: false, isNew: false, discount: null, ingredients: '鸡腿、米饭、时蔬' },
 
-  // 更多产品...
-  { id: 21, name: '干锅花菜便当', category: 'veg', description: '干锅风味，花菜脆嫩，香辣下饭', price: 25, originalPrice: null, rating: 4, reviews: 167, sales: 5500, image: 'https://images.unsplash.com/photo-1588191317928-e5ed69eaf3ec?w=600&q=80', tags: ['干锅风味', '香辣可口'], isHot: false, isNew: false, discount: null },
-  { id: 22, name: '番茄牛腩便当', category: 'meat', description: '番茄酸甜，牛腩软烂，营养美味', price: 38, originalPrice: null, rating: 5, reviews: 156, sales: 5200, image: 'https://images.unsplash.com/photo-1603073891934-64ead27c9d86?w=600&q=80', tags: ['酸甜口味', '营养丰富'], isHot: false, isNew: false, discount: null },
-  { id: 23, name: '孜然羊肉便当', category: 'meat', description: '新疆风味，羊肉鲜嫩，孜然香浓', price: 42, originalPrice: 48, rating: 5, reviews: 145, sales: 4900, image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=600&q=80', tags: ['新疆风味', '孜然香浓'], isHot: false, isNew: false, discount: 8.8 },
-  { id: 24, name: '鱼香肉丝便当', category: 'meat', description: '川菜经典，鱼香味浓，下饭必备', price: 28, originalPrice: null, rating: 4, reviews: 134, sales: 4600, image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80', tags: ['川菜经典', '鱼香味浓'], isHot: false, isNew: false, discount: null },
-  { id: 25, name: '香辣虾仁便当', category: 'fish', description: '虾仁Q弹，香辣过瘾，海鲜风味', price: 45, originalPrice: null, rating: 5, reviews: 123, sales: 4300, image: 'https://images.unsplash.com/photo-1563245372-70a1883c9e45?w=600&q=80', tags: ['海鲜美味', '香辣过瘾'], isHot: false, isNew: true, discount: null },
-  { id: 26, name: '麻婆豆腐便当', category: 'veg', description: '川菜经典，麻辣鲜香，豆腐嫩滑', price: 23, originalPrice: null, rating: 4, reviews: 112, sales: 4000, image: 'https://images.unsplash.com/photo-1625937286074-9ca519d5d9df?w=600&q=80', tags: ['川菜经典', '麻辣鲜香'], isHot: false, isNew: false, discount: null },
-  { id: 27, name: '京酱肉丝便当', category: 'meat', description: '北京风味，甜面酱香浓，肉丝嫩滑', price: 30, originalPrice: null, rating: 5, reviews: 98, sales: 3700, image: 'https://images.unsplash.com/photo-1588191317928-e5ed69eaf3ec?w=600&q=80', tags: ['京味特色', '酱香浓郁'], isHot: false, isNew: false, discount: null },
-  { id: 28, name: '回锅肉便当', category: 'meat', description: '川菜名菜，五花肉香脆，蒜苗清香', price: 32, originalPrice: null, rating: 5, reviews: 87, sales: 3400, image: 'https://images.unsplash.com/photo-1603073891934-64ead27c9d86?w=600&q=80', tags: ['川菜名菜', '香脆可口'], isHot: false, isNew: false, discount: null },
-  { id: 29, name: '清蒸鲈鱼便当', category: 'fish', description: '鲈鱼鲜嫩，清蒸保留原味，健康养生', price: 48, originalPrice: null, rating: 5, reviews: 76, sales: 3100, image: 'https://images.unsplash.com/photo-1563245372-70a1883c9e45?w=600&q=80', tags: ['清淡养生', '原汁原味'], isHot: false, isNew: false, discount: null },
-  { id: 30, name: '辣子鸡丁便当', category: 'chicken', description: '重庆风味，鸡肉香脆，辣椒过瘾', price: 33, originalPrice: null, rating: 5, reviews: 65, sales: 2800, image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80', tags: ['重庆风味', '香脆辣爽'], isHot: false, isNew: true, discount: null },
-
-  // 组合套餐
-  { id: 31, name: '双拼便当（牛肉+鸡肉）', category: 'combo', description: '一次享受两种美味，营养搭配更均衡', price: 42, originalPrice: 50, rating: 5, reviews: 543, sales: 9800, image: 'https://images.unsplash.com/photo-1625937286074-9ca519d5d9df?w=600&q=80', tags: ['双拼组合', '营养均衡'], isHot: false, isNew: false, discount: 8.4 },
-  { id: 32, name: '海陆双拼便当', category: 'combo', description: '海鲜+肉类，双重享受，满足味蕾', price: 46, originalPrice: null, rating: 5, reviews: 421, sales: 8600, image: 'https://images.unsplash.com/photo-1563245372-70a1883c9e45?w=600&q=80', tags: ['海陆组合', '丰盛美味'], isHot: false, isNew: true, discount: null },
-  { id: 33, name: '荤素搭配便当', category: 'combo', description: '肉类+蔬菜，营养全面，健康首选', price: 35, originalPrice: null, rating: 4, reviews: 356, sales: 7200, image: 'https://images.unsplash.com/photo-1603073891934-64ead27c9d86?w=600&q=80', tags: ['荤素搭配', '营养全面'], isHot: false, isNew: false, discount: null },
-  { id: 34, name: '三宝便当', category: 'combo', description: '三种主菜，一次满足，物超所值', price: 39, originalPrice: 45, rating: 5, reviews: 289, sales: 6500, image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80', tags: ['三宝组合', '超值划算'], isHot: false, isNew: false, discount: 8.7 },
-  { id: 35, name: '家庭套餐便当', category: 'combo', description: '2-3人份，菜品丰富，家庭聚餐首选', price: 88, originalPrice: 108, rating: 5, reviews: 234, sales: 5400, image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=600&q=80', tags: ['家庭套餐', '菜品丰富'], isHot: false, isNew: true, discount: 8.2 },
-  { id: 36, name: '儿童营养便当', category: 'combo', description: '专为儿童设计，营养均衡，口味温和', price: 28, originalPrice: null, rating: 5, reviews: 198, sales: 4800, image: 'https://images.unsplash.com/photo-1588191317928-e5ed69eaf3ec?w=600&q=80', tags: ['儿童专属', '营养均衡'], isHot: false, isNew: false, discount: null },
-
-  // 更多蔬菜类
-  { id: 37, name: '时蔬豆腐便当', category: 'veg', description: '新鲜时蔬配嫩豆腐，清淡健康', price: 22, originalPrice: null, rating: 4, reviews: 176, sales: 4200, image: 'https://images.unsplash.com/photo-1603073891934-64ead27c9d86?w=600&q=80', tags: ['清淡健康', '素食营养'], isHot: false, isNew: false, discount: null },
-  { id: 38, name: '地三鲜便当', category: 'veg', description: '东北经典，茄子土豆青椒，下饭美味', price: 24, originalPrice: null, rating: 5, reviews: 154, sales: 3900, image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80', tags: ['东北经典', '美味下饭'], isHot: false, isNew: false, discount: null },
-  { id: 39, name: '家常豆腐便当', category: 'veg', description: '豆腐嫩滑，酱汁浓郁，家常美味', price: 23, originalPrice: null, rating: 4, reviews: 132, sales: 3600, image: 'https://images.unsplash.com/photo-1625937286074-9ca519d5d9df?w=600&q=80', tags: ['家常美味', '豆腐嫩滑'], isHot: false, isNew: false, discount: null },
-  { id: 40, name: '蒜蓉西兰花便当', category: 'veg', description: '西兰花脆嫩，蒜蓉香浓，健康低卡', price: 21, originalPrice: null, rating: 4, reviews: 98, sales: 3000, image: 'https://images.unsplash.com/photo-1588191317928-e5ed69eaf3ec?w=600&q=80', tags: ['健康低卡', '清淡养生'], isHot: false, isNew: false, discount: null },
-  { id: 41, name: '炒双菇便当', category: 'veg', description: '香菇草菇双拼，菌类鲜香，营养丰富', price: 25, originalPrice: null, rating: 4, reviews: 87, sales: 2700, image: 'https://images.unsplash.com/photo-1603073891934-64ead27c9d86?w=600&q=80', tags: ['菌类美味', '营养丰富'], isHot: false, isNew: true, discount: null },
-  { id: 42, name: '素什锦炒饭', category: 'veg', description: '多种蔬菜炒饭，营养全面，清香可口', price: 20, originalPrice: null, rating: 4, reviews: 76, sales: 2400, image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80', tags: ['炒饭美味', '素食健康'], isHot: false, isNew: false, discount: null }
+  // 海鲜类 (5个产品)
+  { id: 14, name: '鳕鱼排饭', category: 'fish', description: '深海鳕鱼，鱼肉鲜嫩细腻，营养丰富，低脂健康', price: 36, originalPrice: null, rating: 5, reviews: 334, sales: 9500, image: '/images/products/cod-fillet-rice.png', tags: ['深海鱼', '鲜嫩细腻', '低脂健康'], isHot: false, isNew: true, discount: null, ingredients: '鳕鱼排、米饭、时蔬、柠檬汁' },
+  { id: 15, name: '小黄鱼饭', category: 'fish', description: '小黄鱼酥炸至金黄，鱼肉鲜美，香酥可口，营养美味', price: 34, originalPrice: null, rating: 5, reviews: 298, sales: 8800, image: '/images/products/yellow-croaker-rice.png', tags: ['鱼肉鲜美', '香酥可口', '营养丰富'], isHot: false, isNew: false, discount: null, ingredients: '小黄鱼、米饭、时蔬' },
+  { id: 16, name: '鲭鱼饭', category: 'fish', description: '鲭鱼肉质鲜嫩，富含Omega-3，健康养生，清淡美味', price: 32, originalPrice: null, rating: 4, reviews: 276, sales: 7600, image: '/images/products/mackerel-rice.png', tags: ['营养健康', 'Omega-3', '清淡美味'], isHot: false, isNew: false, discount: null, ingredients: '鲭鱼、米饭、时蔬' },
+  { id: 17, name: '蒲烧鳗鱼饭', category: 'fish', description: '日式蒲烧工艺，鳗鱼香甜软糯，酱汁浓郁，日本风味', price: 42, originalPrice: 50, rating: 5, reviews: 254, sales: 7200, image: '/images/products/grilled-eel-rice.png', tags: ['日式风味', '香甜软糯', '酱汁浓郁'], isHot: false, isNew: true, discount: 8.4, ingredients: '鳗鱼、蒲烧汁、米饭、海苔' },
+  { id: 18, name: '带鱼饭', category: 'fish', description: '带鱼香煎至金黄，鱼肉鲜嫩，香味浓郁，营养丰富', price: 30, originalPrice: null, rating: 4, reviews: 232, sales: 6800, image: '/images/products/beltfish-rice.png', tags: ['香煎美味', '鱼肉鲜嫩', '营养丰富'], isHot: false, isNew: false, discount: null, ingredients: '带鱼、米饭、时蔬' }
 ])
 
 // 热销产品（前10）
@@ -677,6 +711,47 @@ const visiblePages = computed(() => {
   return pages.filter(p => p !== '...')
 })
 
+const normalizeCategory = (category) => {
+  if (typeof category !== 'string') {
+    return 'all'
+  }
+
+  return validCategoryIds.has(category) ? category : 'all'
+}
+
+const syncCategoryFromRoute = () => {
+  const rawCategory = Array.isArray(route.query.category) ? route.query.category[0] : route.query.category
+  const nextCategory = normalizeCategory(rawCategory)
+
+  activeCategory.value = nextCategory
+
+  if (rawCategory && nextCategory === 'all' && rawCategory !== 'all') {
+    router.replace({
+      path: route.path,
+      query: {
+        ...route.query,
+        category: undefined
+      },
+      hash: route.hash
+    })
+  }
+}
+
+const setActiveCategory = (categoryId) => {
+  const nextCategory = normalizeCategory(categoryId)
+  currentPage.value = 1
+  activeCategory.value = nextCategory
+
+  router.push({
+    path: route.path,
+    query: {
+      ...route.query,
+      category: nextCategory === 'all' ? undefined : nextCategory
+    },
+    hash: route.hash
+  })
+}
+
 // 打开产品详情
 const openProductModal = (product) => {
   selectedProduct.value = product
@@ -699,7 +774,7 @@ const addToCart = (product) => {
 
 // 清空筛选
 const clearFilters = () => {
-  activeCategory.value = 'all'
+  setActiveCategory('all')
   searchQuery.value = ''
   sortBy.value = 'default'
 }
@@ -715,6 +790,15 @@ onMounted(() => {
     once: true,
     offset: 100
   })
+})
+
+watch(() => route.query.category, () => {
+  syncCategoryFromRoute()
+  currentPage.value = 1
+}, { immediate: true })
+
+watch([searchQuery, sortBy], () => {
+  currentPage.value = 1
 })
 </script>
 

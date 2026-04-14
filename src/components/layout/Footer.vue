@@ -120,15 +120,24 @@
 
           <!-- 二维码区域 -->
           <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 mb-4">
-            <div class="w-32 h-32 bg-white rounded-xl flex items-center justify-center mx-auto mb-3">
-              <div class="text-center">
+            <div class="w-40 h-40 bg-white rounded-2xl flex items-center justify-center mx-auto mb-3 overflow-hidden shadow-lg">
+              <img
+                v-if="!qrImageLoadFailed"
+                :src="qrImageSrc"
+                alt="微信二维码"
+                class="w-full h-full object-contain bg-white"
+                loading="lazy"
+                decoding="async"
+                @error="qrImageLoadFailed = true"
+              />
+              <div v-else class="text-center px-4">
                 <svg class="w-20 h-20 text-[#8BC34A] mx-auto" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M4 4h6v6H4V4zm0 10h6v6H4v-6zm10 0h6v6h-6v-6zm0-10h6v6h-6V4zm-8 2h2v2H6V6zm10 0h2v2h-2V6zM6 16h2v2H6v-2zm10 0h2v2h-2v-2z"></path>
                 </svg>
-                <p class="text-xs text-gray-600 mt-1">扫码关注</p>
+                <p class="text-xs text-gray-600 mt-2 leading-relaxed">将二维码图片放到<br />`public/images/wechat-qr.jpg`</p>
               </div>
             </div>
-            <p class="text-center text-xs text-white/80">微信公众号</p>
+            <p class="text-center text-xs text-white/80">微信扫码添加好友</p>
           </div>
 
           <!-- 社交媒体图标 -->
@@ -181,7 +190,10 @@
 </template>
 
 <script setup>
-// Footer组件 - 使用东池品牌绿色主色调
+import { ref } from 'vue'
+
+const qrImageSrc = '/images/wechat-qr.jpg'
+const qrImageLoadFailed = ref(false)
 </script>
 
 <style scoped>
