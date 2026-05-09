@@ -1,0 +1,668 @@
+.gesture-menu-stage {
+  --ink: #152033;
+  --muted: #5f6b7a;
+  --paper: #fff6df;
+  --leaf: #83b93f;
+  --amber: #f59b08;
+  --flame: #f05a18;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #fff7e6;
+  color: var(--ink);
+  isolation: isolate;
+}
+
+.gesture-menu-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -5;
+  background:
+    radial-gradient(circle at 11% 38%, rgba(255, 196, 86, .46), transparent 31vw),
+    radial-gradient(circle at 80% 73%, rgba(131, 185, 63, .34), transparent 30vw),
+    radial-gradient(circle at 92% 22%, rgba(240, 90, 24, .16), transparent 24vw),
+    linear-gradient(116deg, #fff7e5 0%, #fffaf0 48%, #fff0cf 100%);
+}
+
+.gesture-menu-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -4;
+  opacity: .34;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(130, 86, 28, .22) 1px, transparent 0),
+    linear-gradient(110deg, transparent 0 48%, rgba(255,255,255,.38) 49% 51%, transparent 52%);
+  background-size: 28px 28px, 100% 100%;
+  mask-image: radial-gradient(circle at center, #000 0 64%, transparent 94%);
+}
+
+.gesture-grain {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  opacity: .2;
+  background:
+    repeating-linear-gradient(8deg, rgba(114, 72, 24, .08) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(97deg, rgba(255,255,255,.42) 0 1px, transparent 1px 9px);
+  mix-blend-mode: multiply;
+}
+
+.gesture-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(38px);
+  opacity: .56;
+  pointer-events: none;
+  z-index: -2;
+  transition: transform .2s linear;
+}
+
+.gesture-orb-a { width: 30rem; height: 30rem; left: -9rem; top: 16rem; background: #ffd067; }
+.gesture-orb-b { width: 25rem; height: 25rem; right: 12rem; bottom: 5rem; background: #9dd257; }
+.gesture-orb-c { width: 17rem; height: 17rem; right: 3rem; top: 8rem; background: #ff8b2f; opacity: .32; }
+
+.gesture-particle-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.gesture-wrap {
+  position: relative;
+  max-width: 1720px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 104px 48px 50px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 372px;
+  gap: 42px;
+  align-items: center;
+}
+
+.gesture-main { min-width: 0; }
+
+.gesture-kicker {
+  text-align: center;
+  color: #a57228;
+  letter-spacing: .52em;
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 12px;
+  transition: transform .2s linear;
+}
+
+.gesture-title {
+  text-align: center;
+  margin: 0;
+  font-size: clamp(74px, 7vw, 128px);
+  line-height: .86;
+  font-weight: 950;
+  letter-spacing: -.09em;
+  background: linear-gradient(96deg, #68a23a 0%, #9a9327 40%, #e76016 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 22px 48px rgba(151, 95, 20, .13);
+  transition: transform .2s linear;
+}
+
+.gesture-subtitle {
+  text-align: center;
+  margin: 16px 0 20px;
+  color: #263447;
+  font-size: 24px;
+  font-weight: 700;
+  transition: transform .2s linear;
+}
+
+.gesture-theater {
+  position: relative;
+  min-height: 532px;
+  display: grid;
+  place-items: center;
+  perspective: 1250px;
+  transition: transform .2s linear;
+}
+
+.gesture-food-float {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 22px rgba(108, 62, 18, .18));
+  opacity: .92;
+  pointer-events: none;
+  animation: gestureFloat 6.5s ease-in-out infinite;
+}
+
+.gesture-food-float:nth-child(1) { left: 8%; top: 17%; animation-delay: .2s; }
+.gesture-food-float:nth-child(2) { right: 13%; top: 7%; animation-delay: 1.4s; }
+.gesture-food-float:nth-child(3) { left: 16%; bottom: 11%; animation-delay: 2.2s; }
+.gesture-food-float:nth-child(4) { right: 6%; bottom: 22%; animation-delay: 3s; }
+
+.gesture-rice-burst {
+  position: absolute;
+  z-index: 6;
+  width: 610px;
+  height: 360px;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(255,255,255,.94) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 40% 20%, rgba(255,255,255,.88) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 55% 36%, rgba(255,154,61,.42) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 68% 24%, rgba(255,255,255,.86) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 74% 50%, rgba(255,154,61,.38) 0 2px, transparent 3px);
+  background-size: 86px 74px, 104px 82px, 96px 76px, 118px 88px, 92px 80px;
+  filter: drop-shadow(0 10px 16px rgba(141, 84, 18, .1));
+  opacity: .8;
+  transform: translateY(-22px) rotate(-4deg);
+  animation: gestureRiceDrift 7s ease-in-out infinite;
+}
+
+.gesture-card {
+  position: relative;
+  z-index: 8;
+  width: min(500px, 43vw);
+  border-radius: 27px;
+  padding: 18px 26px 24px;
+  background: linear-gradient(146deg, rgba(255,255,255,.8), rgba(255,247,228,.48));
+  border: 1px solid rgba(255,255,255,.76);
+  box-shadow: 0 38px 95px rgba(101, 61, 17, .22), inset 0 1px rgba(255,255,255,.92);
+  backdrop-filter: blur(24px) saturate(1.12);
+  transform-style: preserve-3d;
+  cursor: grab;
+  transition: transform .44s cubic-bezier(.2,.9,.2,1), filter .44s ease, box-shadow .44s ease;
+}
+
+.gesture-card::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255,255,255,.78), transparent 34%, rgba(255,255,255,.2));
+}
+
+.gesture-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.gesture-card.is-moving { transition: none; cursor: grabbing; }
+.gesture-card.is-holding { box-shadow: 0 46px 110px rgba(101, 61, 17, .28), 0 0 0 10px rgba(255,255,255,.22); }
+.gesture-card.is-expanded {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 10050;
+  width: min(580px, 88vw);
+  transform: translate(-50%, -50%) scale(1.04) !important;
+  cursor: zoom-out;
+}
+
+.gesture-card-media {
+  position: relative;
+  height: 282px;
+  margin: -8px -4px 10px;
+  border-radius: 22px;
+  overflow: visible;
+}
+
+.gesture-card-media::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 2px;
+  height: 64px;
+  z-index: 1;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(109, 67, 16, .2), transparent 68%);
+  filter: blur(4px);
+}
+
+.gesture-plate-glow {
+  position: absolute;
+  left: 50%;
+  top: 51%;
+  z-index: 1;
+  width: 92%;
+  height: 70%;
+  border-radius: 44%;
+  background:
+    radial-gradient(ellipse at 50% 52%, rgba(255,255,255,.82), rgba(255,255,255,.24) 52%, transparent 72%),
+    radial-gradient(ellipse at 50% 74%, rgba(255,157,54,.18), transparent 65%);
+  transform: translate(-50%, -50%) rotate(-2deg);
+}
+
+.gesture-card-media img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: 118%;
+  height: 118%;
+  object-fit: contain;
+  transform: translate(-50%, -51%) rotate(-1deg);
+  opacity: 1;
+  filter: saturate(1.12) contrast(1.05) drop-shadow(0 28px 34px rgba(75, 47, 14, .25));
+  user-select: none;
+  pointer-events: none;
+}
+
+.gesture-pixel-canvas {
+  position: absolute;
+  inset: -20px;
+  z-index: 4;
+  width: calc(100% + 40px);
+  height: calc(100% + 40px);
+  opacity: .66;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.gesture-badge {
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 8px 13px;
+  background: linear-gradient(135deg, #ff7a12, #ff4c1d);
+  color: #fff;
+  font-weight: 900;
+  font-size: 13px;
+  box-shadow: 0 14px 26px rgba(255, 83, 18, .28);
+}
+
+.gesture-rating {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: -32px;
+  color: #fff;
+  font-size: 13px;
+  text-shadow: 0 1px 10px rgba(0,0,0,.3);
+}
+
+.gesture-name {
+  position: relative;
+  z-index: 3;
+  margin: 22px 0 8px;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -.05em;
+  color: #172033;
+}
+
+.gesture-desc {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  color: #4d596a;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.gesture-tags {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.gesture-tags span {
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: #fff6e7;
+  color: #e85a18;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.gesture-footer {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.gesture-price { display: flex; align-items: baseline; gap: 10px; }
+.gesture-price strong { font-size: 34px; color: #e94b12; font-weight: 950; }
+.gesture-price del { color: #9ca3af; font-size: 18px; }
+.gesture-sales { font-size: 14px; color: #6b7280; }
+
+.gesture-choose {
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--leaf), var(--amber));
+  color: #fff;
+  font-weight: 950;
+  box-shadow: 0 18px 32px rgba(234, 132, 12, .25);
+  cursor: pointer;
+}
+
+.gesture-preview {
+  position: absolute;
+  z-index: 4;
+  width: 270px;
+  min-height: 330px;
+  border-radius: 23px;
+  padding: 14px;
+  background: rgba(255,255,255,.4);
+  border: 1px solid rgba(255,255,255,.64);
+  box-shadow: 0 30px 70px rgba(94, 58, 18, .16);
+  backdrop-filter: blur(16px);
+  filter: blur(.35px) saturate(.84);
+  opacity: .78;
+  transform-style: preserve-3d;
+  transition: transform .2s linear;
+}
+
+.gesture-preview::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  border-radius: inherit;
+  background: linear-gradient(150deg, rgba(255,255,255,.5), rgba(255,248,230,.16));
+  pointer-events: none;
+}
+
+.gesture-preview > * {
+  position: relative;
+  z-index: 2;
+}
+
+.gesture-preview img {
+  height: 172px;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+  filter: saturate(1.08) drop-shadow(0 16px 22px rgba(0,0,0,.15));
+}
+
+.gesture-preview h3 { margin: 18px 0 8px; font-size: 22px; color: #172033; }
+.gesture-preview p { margin: 0; font-size: 13px; color: #64748b; line-height: 1.5; }
+.gesture-preview-price { margin-top: 12px; color: #f35a19; font-size: 22px; font-weight: 950; }
+.gesture-preview-left { left: 6%; transform: rotateY(18deg) rotateZ(-4deg) scale(.92); transform-origin: right center; }
+.gesture-preview-right { right: 7%; transform: rotateY(-18deg) rotateZ(4deg) scale(.92); transform-origin: left center; }
+
+.gesture-nav-btn {
+  position: absolute;
+  top: 50%;
+  z-index: 15;
+  width: 70px;
+  height: 70px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 18px 40px rgba(93,59,20,.18);
+  display: grid;
+  place-items: center;
+  color: var(--leaf);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.gesture-nav-btn svg { width: 30px; height: 30px; }
+.gesture-nav-prev { left: 25%; }
+.gesture-nav-next { right: 25%; color: #e98b00; }
+
+.gesture-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: -8px;
+  color: #9d722d;
+  font-size: 17px;
+}
+.gesture-hint::before,
+.gesture-hint::after { content: ""; width: 60px; height: 1px; background: linear-gradient(90deg, transparent, #c69b44); }
+.gesture-hint::after { background: linear-gradient(90deg, #c69b44, transparent); }
+
+.gesture-side { display: flex; flex-direction: column; gap: 16px; }
+.gesture-cart {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 999px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,.84);
+  box-shadow: 0 18px 40px rgba(75,45,12,.12);
+  font-weight: 950;
+  transition: transform .2s linear;
+}
+.gesture-cart-count { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #ff6813; color: #fff; }
+
+.gesture-panel {
+  border-radius: 29px;
+  padding: 28px;
+  background: rgba(255,255,255,.52);
+  border: 1px solid rgba(255,255,255,.74);
+  box-shadow: 0 34px 90px rgba(78,48,14,.14), inset 0 1px rgba(255,255,255,.82);
+  backdrop-filter: blur(24px) saturate(1.1);
+  transition: transform .2s linear;
+}
+
+.gesture-panel-head { display: flex; align-items: center; gap: 15px; margin-bottom: 22px; }
+.gesture-hand-icon { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: #fff8e8; border: 1px solid rgba(255,255,255,.8); font-size: 28px; box-shadow: inset 0 0 0 8px rgba(139,195,74,.08); }
+.gesture-panel h3 { margin: 0; font-size: 24px; color: #172033; font-weight: 950; }
+.gesture-panel p { margin: 0 0 22px; color: #526072; line-height: 1.8; text-align: center; }
+.gesture-safe { border-radius: 18px; padding: 16px 18px; background: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.72); margin-bottom: 20px; }
+.gesture-safe strong { display: block; color: #172033; margin-bottom: 8px; }
+.gesture-safe small { color: #536173; line-height: 1.6; }
+
+.gesture-camera-message {
+  display: none;
+  margin: -4px 0 14px;
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,.62);
+  border: 1px solid rgba(255,255,255,.78);
+  color: #4d596a;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.gesture-camera-message.is-visible { display: block; }
+.gesture-camera-message[data-tone="warn"] {
+  background: rgba(255, 244, 226, .78);
+  border-color: rgba(255, 171, 77, .45);
+  color: #8a4c0c;
+}
+
+.gesture-action { width: 100%; border: 0; border-radius: 999px; padding: 15px 18px; font-weight: 950; font-size: 16px; cursor: pointer; }
+.gesture-action.primary { background: linear-gradient(135deg, var(--leaf), var(--amber)); color: #fff; box-shadow: 0 16px 32px rgba(234,132,12,.22); }
+.gesture-action.https { margin-top: 12px; background: #172033; color: #fff; box-shadow: 0 14px 28px rgba(23,32,51,.18); }
+.gesture-action.https[hidden] { display: none; }
+.gesture-action.ghost { margin-top: 12px; background: #fff; color: #374151; }
+
+.gesture-camera {
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+  border-radius: 24px;
+  background: #202718;
+  box-shadow: 0 24px 60px rgba(34,23,7,.24);
+  border: 1px solid rgba(255,255,255,.72);
+}
+.gesture-camera video { width: 100%; height: 220px; object-fit: cover; transform: scaleX(-1); display: none; }
+.gesture-camera.is-on video { display: block; }
+.gesture-camera-placeholder {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(19, 32, 20, .15), rgba(255,122,18,.14)),
+    radial-gradient(circle at 18% 18%, rgba(139,195,74,.32), transparent 30%),
+    url('/images/products/signature-rice.png') center/cover;
+  filter: saturate(.86);
+  opacity: .86;
+}
+
+.gesture-camera-placeholder::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.4));
+  backdrop-filter: blur(2px);
+}
+
+.gesture-hand-demo {
+  position: absolute;
+  right: 42px;
+  top: 38px;
+  z-index: 2;
+  width: 112px;
+  height: 142px;
+  transform: rotate(-17deg);
+  filter: drop-shadow(0 22px 26px rgba(0,0,0,.22));
+  animation: gestureHandWave 2.9s ease-in-out infinite;
+}
+
+.gesture-hand-demo i,
+.gesture-hand-demo span {
+  position: absolute;
+  display: block;
+  background: linear-gradient(135deg, #ffe5cf, #f3b38b 58%, #d98865);
+  border: 1px solid rgba(255,255,255,.42);
+}
+
+.gesture-hand-demo i {
+  bottom: 56px;
+  width: 18px;
+  border-radius: 999px 999px 12px 12px;
+  transform-origin: bottom center;
+}
+
+.gesture-hand-demo i:nth-child(1) { left: 14px; height: 82px; transform: rotate(-14deg); }
+.gesture-hand-demo i:nth-child(2) { left: 36px; height: 104px; transform: rotate(-4deg); }
+.gesture-hand-demo i:nth-child(3) { left: 59px; height: 96px; transform: rotate(5deg); }
+.gesture-hand-demo i:nth-child(4) { left: 82px; height: 74px; transform: rotate(14deg); }
+
+.gesture-hand-demo span {
+  left: 22px;
+  bottom: 18px;
+  width: 70px;
+  height: 66px;
+  border-radius: 30px 32px 28px 28px;
+}
+
+.gesture-hand-demo span::before {
+  content: "";
+  position: absolute;
+  left: -21px;
+  top: 24px;
+  width: 44px;
+  height: 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f6c29e, #d98963);
+  transform: rotate(-34deg);
+}
+
+.gesture-hand-demo span::after {
+  content: "";
+  position: absolute;
+  left: 19px;
+  bottom: -34px;
+  width: 36px;
+  height: 42px;
+  border-radius: 0 0 18px 18px;
+  background: linear-gradient(135deg, #e9a17b, #c87957);
+}
+.gesture-camera.is-on .gesture-camera-placeholder { display: none; }
+.gesture-camera-top { position: absolute; left: 16px; top: 14px; display: flex; align-items: center; gap: 8px; color: #fff; font-size: 13px; font-weight: 800; text-shadow: 0 1px 8px rgba(0,0,0,.45); }
+.gesture-dot { width: 8px; height: 8px; border-radius: 50%; background: #8bc34a; box-shadow: 0 0 14px #8bc34a; }
+.gesture-camera-expand { position: absolute; right: 14px; top: 12px; color: #fff; border: 0; background: transparent; font-size: 22px; cursor: pointer; }
+.gesture-status { position: absolute; left: 14px; right: 14px; bottom: 12px; border-radius: 999px; background: rgba(17,20,12,.74); color: #fff; padding: 10px 14px; font-weight: 800; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(12px); }
+.gesture-status b { color: #9de45b; }
+
+.gesture-detail-backdrop { position: fixed; inset: 0; z-index: 10040; opacity: 0; pointer-events: none; background: rgba(17,20,12,.42); backdrop-filter: blur(12px); transition: opacity .3s ease; }
+.gesture-detail-backdrop.is-visible { opacity: 1; pointer-events: auto; }
+.gesture-toast { position: fixed; left: 50%; bottom: 34px; z-index: 10080; transform: translate(-50%, 30px); opacity: 0; border-radius: 999px; padding: 14px 20px; background: #11140c; color: #fff; font-weight: 900; box-shadow: 0 24px 60px rgba(0,0,0,.2); transition: .35s ease; }
+.gesture-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+@keyframes gestureFloat {
+  0%, 100% { transform: translate3d(0,0,0) rotate(0); }
+  50% { transform: translate3d(18px,-22px,0) rotate(10deg); }
+}
+
+@keyframes gestureRiceDrift {
+  0%, 100% { transform: translate3d(0,-22px,0) rotate(-4deg) scale(1); opacity: .72; }
+  50% { transform: translate3d(12px,-36px,0) rotate(2deg) scale(1.04); opacity: .92; }
+}
+
+@keyframes gestureHandWave {
+  0%, 100% { transform: rotate(-17deg) translate3d(0,0,0); }
+  50% { transform: rotate(-8deg) translate3d(-8px,-2px,0); }
+}
+
+@media (max-width: 1280px) {
+  .gesture-preview-left { left: 1%; }
+  .gesture-preview-right { right: 2%; }
+  .gesture-nav-prev { left: 20%; }
+  .gesture-nav-next { right: 20%; }
+}
+
+@media (max-width: 1100px) {
+  .gesture-wrap { grid-template-columns: 1fr; padding-inline: 24px; }
+  .gesture-side { max-width: 720px; width: 100%; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; }
+  .gesture-cart { position: absolute; right: 24px; top: 96px; }
+  .gesture-preview-left { left: -5%; }
+  .gesture-preview-right { right: -5%; }
+  .gesture-nav-prev { left: 16%; }
+  .gesture-nav-next { right: 16%; }
+}
+
+@media (max-width: 760px) {
+  .gesture-menu-stage { min-height: auto; }
+  .gesture-wrap { min-height: auto; display: block; padding: 86px 14px 42px; }
+  .gesture-kicker { text-align: left; padding-left: 2px; font-size: 10px; letter-spacing: .34em; }
+  .gesture-title { text-align: left; font-size: clamp(56px, 16vw, 68px); letter-spacing: -.1em; }
+  .gesture-subtitle { text-align: left; margin-top: 14px; font-size: 18px; line-height: 1.55; }
+  .gesture-theater { min-height: 520px; margin-top: 14px; }
+  .gesture-card { width: 100%; padding: 16px; border-radius: 24px; }
+  .gesture-card-media { height: 224px; margin: -2px -2px 8px; }
+  .gesture-card-media img { width: 122%; height: 122%; transform: translate(-50%, -52%) rotate(-1deg); }
+  .gesture-rice-burst { width: 360px; height: 250px; opacity: .56; transform: translateY(-16px) scale(.8); }
+  .gesture-rating { margin-top: -24px; font-size: 12px; }
+  .gesture-name { font-size: 30px; }
+  .gesture-preview { display: none; }
+  .gesture-nav-btn { width: 56px; height: 56px; top: 42%; }
+  .gesture-nav-prev { left: 4px; }
+  .gesture-nav-next { right: 4px; }
+  .gesture-hint { margin: 16px 0 18px; font-size: 14px; }
+  .gesture-hint::before, .gesture-hint::after { width: 34px; }
+  .gesture-side { display: block; }
+  .gesture-cart { position: relative; inset: auto; display: inline-flex; margin: 4px 0 16px; }
+  .gesture-panel { padding: 22px; margin-top: 12px; }
+  .gesture-camera-message { font-size: 12px; line-height: 1.6; }
+  .gesture-camera { margin-top: 16px; }
+  .gesture-hand-demo { right: 28px; top: 42px; transform: rotate(-17deg) scale(.9); }
+  .gesture-footer { display: block; }
+  .gesture-price { justify-content: space-between; }
+  .gesture-choose { width: 100%; margin-top: 12px; }
+  .gesture-food-float { width: 34px; height: 34px; opacity: .7; }
+}

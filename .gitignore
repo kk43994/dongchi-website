@@ -1,0 +1,19 @@
+# Dependencies / build caches
+node_modules/
+.npm/
+.cache/
+dist/
+build/
+
+# Local environment and secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+/etc/letsencrypt/
+
+# Logs / OS files
+*.log
+.DS_Store
+Thumbs.db
