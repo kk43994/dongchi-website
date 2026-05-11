@@ -94,14 +94,15 @@
     if (!home) return;
     const old = [...home.querySelectorAll('section')].find(s => /匠心产品|Our Products|进入产品中心/.test(s.innerText || ''));
     if (!old) return;
-    if (!document.getElementById('gesture-menu-stage')) {
+    const exists = document.getElementById('gesture-menu-stage');
+    if (!exists) {
       old.insertAdjacentHTML('beforebegin', shell());
       bindStatic();
       startBackgroundParticles();
+      renderCarousel();
+      setupParallax();
     }
     old.style.display = 'none';
-    renderCarousel();
-    setupParallax();
   }
 
   function renderCarousel(dir = 0) {
